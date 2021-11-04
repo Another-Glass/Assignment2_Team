@@ -3,7 +3,7 @@ import { statusCode, responseMessage } from '../globals/*';
 import * as userService from '../services/userService.js';
 import encryption from '../libs/encryption.js';
 import jwt from '../libs/jwt.js';
-const { ValidationError, DuplicatedError, PasswordMissMatch } = require('../utils/errors/errors');
+const { ValidationError, DuplicatedError, PasswordMissMatchError } = require('../utils/errors/userError');
 
 //회원가입
 export const postSignup = async (req, res, next) => {
@@ -21,7 +21,7 @@ export const postSignup = async (req, res, next) => {
     if (isEmail) throw new DuplicatedError()
     
     //패스워드 불일치
-    if (password !== password2) throw new PasswordMissMatch()
+    if (password !== password2) throw new PasswordMissMatchError()
     
     //암호화
     const salt = encryption.makeSalt();
