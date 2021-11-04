@@ -3,31 +3,26 @@ import { statusCode, responseMessage } from '../globals/*';
 import * as userService from '../services/userService.js';
 import encryption from '../libs/encryption.js';
 import jwt from '../libs/jwt.js';
+const { ValidationError, DuplicatedError, PasswordMissMatch } = require('../utils/errors/errors');
 
 //회원가입
-export const postSignup = async (req, res) => {
+export const postSignup = async (req, res, next) => {
   try {
     const { name, email, password, password2 } = req.body;
 
     //입력값 확인
     if (name === undefined || email === undefined || password === undefined || password2 === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
+      throw new ValidationError();
     }
+    
     const isEmail = await userService.checkEmail(email);
 
     //이메일 중복
-    if (isEmail) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.ALREADY_EMAIL))
-    }
-
+    if (isEmail) throw new DuplicatedError()
+    
     //패스워드 불일치
-    if (password !== password2) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.MISS_MATCH_PW));
-    }
-
+    if (password !== password2) throw new PasswordMissMatch()
+    
     //암호화
     const salt = encryption.makeSalt();
     const encryptPassword = encryption.encrypt(password, salt);
