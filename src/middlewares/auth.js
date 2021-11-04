@@ -1,12 +1,12 @@
-import jwt from '../libs/jwt.js';
-import util from '../utils/resFormatter.js';
-import statusCode from '../globals/statusCode.js';
-import responseMessage from '../globals/responseMessage.js';
+const jwt = require('../libs/jwt.js');
+const util = require('../utils/resFormatter.js');
+const statusCode = require('../globals').statusCode;
+const responseMessage = require('../globals').statusCode;
 
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
 
-export const checkToken = async (req, res, next) => {
+exports.checkToken = async (req, res, next) => {
     const { token } = req.headers;
     if (!token) {
         return res.status(statusCode.FORBIDDEN)

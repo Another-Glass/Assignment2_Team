@@ -13,10 +13,6 @@ const POST = '/posts';
 const POST_DETAIL = '/:postId';
 const POST_SEARCH = '/search/:categoryId';
 
-//comment
-const COMMENT = '/comments';
-const COMMENT_DETAIL = '/:commentId'
-
 const routes = {
   root: ROOT,
   user: USER,
@@ -25,8 +21,9 @@ const routes = {
   post: POST,
   postDetail: POST_DETAIL,
   postSearch: POST_SEARCH,
-  commentDetail: COMMENT_DETAIL,
-  comment: COMMENT,
 }
 
-export default routes;
+module.exports = routes;
+
+
+

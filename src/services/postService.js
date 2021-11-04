@@ -1,8 +1,8 @@
-import Post from '../models/postModel.js'
+const models = require('../models');
 
-export const createPost = async (title, content, categoryIdx, userId) => {
+exports.createPost = async (title, content, categoryIdx, userId) => {
   try {
-    const post = await Post.create({
+    const post = await models.post.create({
       title,
       content,
       userId,
@@ -15,9 +15,9 @@ export const createPost = async (title, content, categoryIdx, userId) => {
   }
 }
 
-export const readPost = async (postId) => {
+exports.readPost = async (postId) => {
   try {
-    const post = await Post.findById({
+    const post = await models.post.findById({
       _id: postId
     });
     return post;
@@ -26,9 +26,9 @@ export const readPost = async (postId) => {
   }
 }
 
-export const updatePost = async (title, content, categoryIdx, postId) => {
+exports.updatePost = async (title, content, categoryIdx, postId) => {
   try {
-    const post = await Post.findOneAndUpdate(
+    const post = await models.post.findOneAndUpdate(
       {
         _id: postId
       },
@@ -44,18 +44,18 @@ export const updatePost = async (title, content, categoryIdx, postId) => {
   }
 }
 
-export const destroyPost = async (postId) => {
+exports.destroyPost = async (postId) => {
   try {
-    const post = await Post.findByIdAndDelete(postId);
+    const post = await models.post.findByIdAndDelete(postId);
     return post;
   } catch (err) {
     throw err;
   }
 }
 
-export const readPostList = async (offset, limit) => {
+exports.readPostList = async (offset, limit) => {
   try {
-    const postList = await Post.find()
+    const postList = await models.post.find()
       .sort({ 'createdAt': -1 })
       .limit(limit)
       .skip(offset)
@@ -66,9 +66,9 @@ export const readPostList = async (offset, limit) => {
 }
 
 
-export const increaseViewCount = async (postId, viewCount) => {
+exports.increaseViewCount = async (postId, viewCount) => {
   try {
-    const post = await Post.findOneAndUpdate(
+    const post = await models.post.findOneAndUpdate(
       {
         _id: postId
       },
@@ -83,7 +83,7 @@ export const increaseViewCount = async (postId, viewCount) => {
 }
 
 
-export const searchPost = async (categoryId, offset, limit, title, content) => {
+exports.searchPost = async (categoryId, offset, limit, title, content) => {
   try {
     const query = [];
 
@@ -92,7 +92,7 @@ export const searchPost = async (categoryId, offset, limit, title, content) => {
     if (title) query.push({ title: { $regex: title } });
     if (content) query.push({ content: { $regex: content } });
 
-    const results = await Post.find({
+    const results = await models.post.find({
       $and: [{ $or: query }, { "categoryIdx": categoryId }]
     })
       .sort({ 'createdAt': -1 })

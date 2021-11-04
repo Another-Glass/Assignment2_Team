@@ -1,13 +1,13 @@
-import express from "express";
-import routes from '../globals/routes.js';
+const express = require("express");
+const routes = require('../globals').routes;
 
-import { postSignup, postSignin } from '../controllers/userController.js';
+const userController = require('../controllers/userController.js');
 
 const userRouter = express.Router();
 
 //유저생성
-userRouter.post(routes.signup, postSignup);
+userRouter.post(routes.signup, userController.postSignup);
 //토큰생성
-userRouter.post(routes.signin, postSignin);
+userRouter.post(routes.signin, userController.postSignin);
 
-export default userRouter;
+module.exports = userRouter;

@@ -1,4 +1,5 @@
-const { Schema, Mongoose } = require('mongoose');
+const Mongoose = require('mongoose');
+const Schema = Mongoose.Schema;
 const AutoIncrementFactory = require('mongoose-sequence');
 
 /**
@@ -8,7 +9,7 @@ const AutoIncrementFactory = require('mongoose-sequence');
  * @param {string} name
  * @param {string} inc_field
  */
-export const autoIdSetter = (schema, mongoose, name, inc_field) => {
+module.exports = (schema, mongoose, name, inc_field) => {
   const AutoIncrement = AutoIncrementFactory(mongoose);
   const option = { id: `${name}_${inc_field}`, inc_field };
   schema.plugin(AutoIncrement, option);

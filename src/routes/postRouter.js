@@ -1,9 +1,8 @@
-import express from "express";
-import routes from '../globals/routes.js';
+const express = require("express");
+const routes = require('../globals').routes;
 
-import { checkToken } from '../middlewares/auth.js';
-import * as postController from '../controllers/postController.js';
-import * as commentController from '../controllers/commentController.js';
+const { checkToken } = require('../middlewares/auth.js');
+const postController = require('../controllers/postController.js');
 
 const postRouter = express.Router();
 
@@ -21,18 +20,5 @@ postRouter.delete(routes.postDetail, checkToken, postController.deletePost);
 //게시글 검색
 postRouter.get(routes.postSearch, postController.getSearchPost);
 
-//댓글 생성
-postRouter.post(routes.postDetail + routes.comment, checkToken, commentController.postComment);
-//댓글 조회
-postRouter.get(routes.postDetail + routes.comment, commentController.getCommentList);
-//대댓글 조회
-postRouter.get(routes.postDetail + routes.comment + routes.commentDetail, commentController.getCommentInComment);
-//대댓글 생성
-postRouter.post(routes.postDetail + routes.comment + routes.commentDetail, checkToken, commentController.postCommentInComment);
-//댓글or대댓글 수정
-postRouter.delete(routes.postDetail + routes.comment + routes.commentDetail, checkToken, commentController.deleteComment);
-//댓글or대댓글 삭제
-postRouter.put(routes.postDetail + routes.comment + routes.commentDetail, checkToken, commentController.putComment);
 
-
-export default postRouter;
+module.exports = postRouter;
