@@ -3,7 +3,7 @@ import { statusCode, responseMessage } from '../globals/*';
 import * as userService from '../services/userService.js';
 import encryption from '../libs/encryption.js';
 import jwt from '../libs/jwt.js';
-const { ValidationError, DuplicatedError, PasswordMissMatchError } = require('../utils/errors/userError');
+const { ValidationError, DuplicatedError, PasswordMissMatchError, NotMatchedUserError } = require('../utils/errors/userError');
 
 //회원가입
 export const postSignup = async (req, res, next) => {
@@ -38,23 +38,18 @@ export const postSignup = async (req, res, next) => {
 }
 
 //토큰 생성
-export const postSignin = async (req, res) => {
+export const postSignin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     //입력값 확인
-    if (email === undefined || password === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (email === undefined || password === undefined) throw new ValidationError();
+  
     const isEmail = await userService.checkEmail(email);
 
     //이메일 중복
-    if (!isEmail) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NO_USER))
-    }
+    if (!isEmail) throw new NotMatchedUserError();
+      
 
     //확인용 암호화
     const { salt, password: realPassword } = isEmail;
@@ -62,11 +57,8 @@ export const postSignin = async (req, res) => {
     const inputPassword = encryption.encrypt(password, salt);
 
     //패스워드 불일치
-    if (inputPassword !== realPassword) {
-      return res.status(statusCode.UNAUTHORIZED)
-        .send(util.fail(statusCode.UNAUTHORIZED, responseMessage.MISS_MATCH_PW));
-    }
-
+    if (inputPassword !== realPassword) throw new PasswordMissMatchError();
+    
     //쿼리 실행
     const user = await userService.signin(email, inputPassword);
 

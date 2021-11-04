@@ -23,6 +23,14 @@ class PasswordMissMatchError extends Error {
   }  
 }
 
+class NotMatchedUserError extends Error {
+  constructor(message = responseMessage.NO_USER , status = statusCode.BAD_REQUEST) {
+    super(message);
+    this.status = status;
+  }  
+}
+
 module.exports.ValidationError = ValidationError;
 module.exports.DuplicatedError = DuplicatedError;
 module.exports.PasswordMissMatchError = PasswordMissMatchError;
+module.exports.NotMatchedUserError = NotMatchedUserError;
