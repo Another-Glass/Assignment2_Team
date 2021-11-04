@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 
-const { logger, util } = require('./utils');
+const { logger, resFormatter } = require('./utils');
 const { statusCode, routes, responseMessage } = require('./globals')
 const globalRouter = require('./routes/globalRouter.js');
 const userRouter = require('./routes/userRouter.js');
@@ -38,11 +38,12 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
   let errCode = err.status || statusCode.INTERNAL_SERVER_ERROR;
-  let message = req.app.get('env') != 'production' ? err.message : responseMessage.INTERNAL_SERVER_ERROR;
+  let message = errCode == statusCode.INTERNAL_SERVER_ERROR ? responseMessage.INTERNAL_SERVER_ERROR : err.message;
 
-  console.log(err);
+  if (req.app.get('env') == "development") logger.err(err);
+
   return res.status(errCode)
-            .send(util.fail(message));
+    .send(resFormatter.fail(message));
 });
 
 module.exports = app;

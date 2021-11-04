@@ -5,8 +5,8 @@
   "author": "const",
   "private": true,
   "scripts": {
-    "start": "set DEBUG=src* & nodemon ./bin/www",
-    "debug": "set DEBUG=src* & set NODE_ENV='development' nodemon ./bin/www",
+    "start": "set DEBUG=src*& set NODE_ENV=production& nodemon ./bin/www",
+    "debug": "set DEBUG=src*& nodemon ./bin/www",
     "before": "npm install pm2 -g"
   },
   "dependencies": {
