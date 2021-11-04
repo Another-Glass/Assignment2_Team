@@ -1,8 +1,8 @@
-import User from '../models/userModel.js';
+const models = require('../models');
 
-export const signup = async (name, email, password, salt) => {
+exports.signup = async (name, email, password, salt) => {
   try {
-    const user = await User.create({
+    const user = await models.user.create({
       name: name,
       email: email,
       password: password,
@@ -14,9 +14,9 @@ export const signup = async (name, email, password, salt) => {
   }
 }
 
-export const checkEmail = async email => {
+exports.checkEmail = async email => {
   try {
-    const alreadyEmail = await User.findOne({
+    const alreadyEmail = await models.user.findOne({
       email: email
     });
     return alreadyEmail;
@@ -25,9 +25,9 @@ export const checkEmail = async email => {
   }
 }
 
-export const signin = async (email, password) => {
+exports.signin = async (email, password) => {
   try {
-    const user = await User.findOne({
+    const user = await models.user.findOne({
       email: email,
       password: password
     });
@@ -37,9 +37,9 @@ export const signin = async (email, password) => {
   }
 }
 
-export const updateRefreshToken = async (id, refreshToken) => {
+exports.updateRefreshToken = async (id, refreshToken) => {
   try {
-    const user = await User.findOneAndUpdate(
+    const user = await models.user.findOneAndUpdate(
       {
         _id: id
       },

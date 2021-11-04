@@ -1,7 +1,6 @@
-import dotenv from "dotenv";
-
+const dotenv = require('dotenv');
 dotenv.config();
 
-export default {
+module.exports = {
   dbURL: process.env.DB_URL
 };

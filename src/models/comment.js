@@ -44,4 +44,4 @@ CommentSchema.pre('findOneAndDelete', async function (next) {
 });
 */
 
-export default Comment;
+module.exports = Comment;

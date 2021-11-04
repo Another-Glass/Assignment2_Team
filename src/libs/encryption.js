@@ -1,7 +1,7 @@
-import crypto from 'crypto';
+const crypto = require('crypto');
 
 
-export default {
+module.exports = {
     makeSalt: () => {
         return crypto.randomBytes(32).toString('hex');
     },

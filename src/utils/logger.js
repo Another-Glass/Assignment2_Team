@@ -1,7 +1,7 @@
-import debug from 'debug';
+const debug = require('debug');
 
 
-export default {
+module.exports = {
   log: (msg) => {
     debug('src:log')(msg);
   },

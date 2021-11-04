@@ -1,8 +1,7 @@
-import dotenv from 'dotenv';
-
+const dotenv = require('dotenv');
 dotenv.config();
 
-export default {
+module.exports = {
   secretKey: process.env.JWT_SECERT,
   options: {
     algorithm: process.env.JWT_ALGO,

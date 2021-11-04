@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import app from '../app.js'
-import logger from '../utils/logger.js';
-import http from 'http';
+const app = require('../app.js');
+const logger = require('../utils/logger.js');
+const http = require('http');
 
 
 //포트 노멀라이즈

@@ -1,11 +1,11 @@
-import jsonwebtoken from 'jsonwebtoken';
-import secretKey from '../configs/secretKey.js';
-import * as userService from '../services/userService.js';
+const jsonwebtoken = require('jsonwebtoken');
+const secretKey = require('../configs/secretKey.js');
+const userService = require('../services/userService.js');
 
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
 
-export default {
+module.exports = {
     sign: async user => {
         const payload = {
             id: user.id,
