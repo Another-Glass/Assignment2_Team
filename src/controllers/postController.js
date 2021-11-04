@@ -88,37 +88,28 @@ export const putPost = async (req, res, next) => {
 }
 
 //게시글 삭제
-export const deletePost = async (req, res) => {
+export const deletePost = async (req, res, next) => {
   try {
     const id = req.decoded;
     const { postId } = req.params;
 
     //입력값 확인
-    if (postId === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (postId === undefined) throw new ValidationError()
+    
     //사전 쿼리
     const post = await postService.readPost(postId);
 
     //게시글 유무
-    if (post === null) {
-      return res.status(statusCode.NOT_FOUND)
-        .send(util.fail(statusCode.NOT_FOUND, responseMessage.NO_POST));
-    }
-
+    if (post === null) throw new NotMatchedPostError()
+    
     //작성자 일치 확인
-    if (post.userId.toString() !== id) {
-      return res.status(statusCode.UNAUTHORIZED)
-        .send(util.fail(statusCode.UNAUTHORIZED, responseMessage.PERMISSION_ERROR));
-    }
-
+    if (post.userId.toString() !== id) throw new UnAuthorizedError()
+    
     //쿼리 실행
     await postService.destroyPost(postId);
 
     return res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, responseMessage.DELETE_POST_SUCCESS));
+              .send(util.success(responseMessage.DELETE_POST_SUCCESS));
   } catch (err) {
     next(err);
   }
