@@ -31,7 +31,7 @@ export const postSignup = async (req, res, next) => {
     await userService.signup(name, email, encryptPassword, salt);
 
     return res.status(statusCode.CREATED)
-      .send(util.success(statusCode.CREATED, responseMessage.CREATED_USER));
+              .send(util.success(responseMessage.CREATED_USER));
   } catch (err) {
     next(err);
   }
@@ -66,10 +66,7 @@ export const postSignin = async (req, res, next) => {
     const { accessToken, refreshToken } = await jwt.sign(user);
 
     return res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, responseMessage.LOGIN_SUCCESS, {
-        accessToken,
-        refreshToken
-      }))
+              .send(util.success(responseMessage.LOGIN_SUCCESS, { accessToken, refreshToken }))
   } catch (err) {
     next(err);
   }

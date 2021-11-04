@@ -45,7 +45,7 @@ app.use(function (err, req, res, next) {
 
   console.log(err);
   return res.status(errCode)
-    .send(util.fail(errCode, message));
+            .send(util.fail(message));
 });
 
 module.exports = app;
