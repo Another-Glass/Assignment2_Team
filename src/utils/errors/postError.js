@@ -16,6 +16,13 @@ class NotMatchedPostError extends Error {
   }  
 }
 
+class UnAuthorizedError extends Error {
+  constructor(message = responseMessage.PERMISSION_ERROR , status = statusCode.UNAUTHORIZED) {
+    super(message);
+    this.status = status;
+  }  
+}
 
 module.exports.ValidationError = ValidationError;
 module.exports.NotMatchedPostError = NotMatchedPostError;
+module.exports.UnAuthorizedError = UnAuthorizedError;

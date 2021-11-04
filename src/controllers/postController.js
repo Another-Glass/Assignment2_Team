@@ -5,7 +5,7 @@ import logger from '../utils/logger';
 import * as postService from '../services/postService.js';
 import { createError } from 'http-errors';
 
-const { ValidationError, NotMatchedPostError } = require('../utils/errors/postError');
+const { ValidationError, NotMatchedPostError, UnAuthorizedError } = require('../utils/errors/postError');
 
 
 //게시글 생성
@@ -57,7 +57,7 @@ export const getPost = async (req, res, next) => {
 }
 
 //게시글 수정
-export const putPost = async (req, res) => {
+export const putPost = async (req, res, next) => {
   try {
     const id = req.decoded;
     const { postId } = req.params;
@@ -65,30 +65,23 @@ export const putPost = async (req, res) => {
 
     //입력값 확인
     if (postId === undefined || (title === undefined && content === undefined && categoryIdx == undefined)) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
+      throw new ValidationError();
     }
 
     //사전 쿼리
     const post = await postService.readPost(postId);
 
     //게시글 유무 확인
-    if (post === null) {
-      return res.status(statusCode.NOT_FOUND)
-        .send(util.fail(statusCode.NOT_FOUND, responseMessage.NO_POST));
-    }
+    if (post === null) throw new NotMatchedPostError();
 
     //작성자 일치 확인
-    if (post.userId.toString() !== id) {
-      return res.status(statusCode.UNAUTHORIZED)
-        .send(util.fail(statusCode.UNAUTHORIZED, responseMessage.PERMISSION_ERROR));
-    }
+    if (post.userId.toString() !== id) throw new UnAuthorizedError();
 
     //쿼리 실행
     await postService.updatePost(title, content, categoryIdx, postId);
 
     return res.status(statusCode.CREATED)
-      .send(util.success(statusCode.CREATED, responseMessage.UPDATE_POST_SUCCESS));
+              .send(util.success(responseMessage.UPDATE_POST_SUCCESS));
   } catch (err) {
     next(err);
   }
