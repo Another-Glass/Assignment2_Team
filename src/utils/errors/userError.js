@@ -24,7 +24,7 @@ class PasswordMissMatchError extends Error {
 }
 
 class NotMatchedUserError extends Error {
-  constructor(message = responseMessage.NO_USER , status = statusCode.BAD_REQUEST) {
+  constructor(message = responseMessage.NO_USER , status = statusCode.NOT_FOUND) {
     super(message);
     this.status = status;
   }  

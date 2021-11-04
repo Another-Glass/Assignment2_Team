@@ -9,4 +9,13 @@ class ValidationError extends Error {
   }
 };
 
+class NotMatchedPostError extends Error {
+  constructor(message = responseMessage.NO_POST , status = statusCode.NOT_FOUND) {
+    super(message);
+    this.status = status;
+  }  
+}
+
+
 module.exports.ValidationError = ValidationError;
+module.exports.NotMatchedPostError = NotMatchedPostError;

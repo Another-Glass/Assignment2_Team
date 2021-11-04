@@ -5,7 +5,7 @@ import logger from '../utils/logger';
 import * as postService from '../services/postService.js';
 import { createError } from 'http-errors';
 
-const { ValidationError } = require('../utils/errors/postError');
+const { ValidationError, NotMatchedPostError } = require('../utils/errors/postError');
 
 
 //게시글 생성
@@ -28,37 +28,29 @@ export const postPost = async (req, res, next) => {
 }
 
 //게시글 조회
-export const getPost = async (req, res) => {
+export const getPost = async (req, res, next) => {
   try {
     const { postId } = req.params;
 
     //입력값 확인
-    if (postId === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (postId === undefined) throw new ValidationError();
+    
     //쿼리 실행
     const post = await postService.readPost(postId);
 
     //게시글 유무 확인
-    if (post === null) {
-      return res.status(statusCode.NOT_FOUND)
-        .send(util.fail(statusCode.NOT_FOUND, responseMessage.NO_POST));
-    }
+    if (post === null) throw new NotMatchedPostError();
 
     //조회수 변경
     if (!req.cookies[`postId${postId}`]) {
-      console.log("increase viewCount");
       post.viewCount++;
       postService.increaseViewCount(postId, post.viewCount);
     }
 
     //조회수 체크를 위한 쿠키
-    return res.cookie(`postId${postId}`, postId, {
-      maxAge: 1000 * 60 * 5
-    }).status(statusCode.OK)
-      .send(util.success(statusCode.OK, responseMessage.READ_POST_SUCCESS, post));
+    return res.cookie(`postId${postId}`, postId, { maxAge: 1000 * 60 * 5 })
+              .status(statusCode.OK)
+              .send(util.success(responseMessage.READ_POST_SUCCESS, post));
   } catch (err) {
     next(err);
   }
