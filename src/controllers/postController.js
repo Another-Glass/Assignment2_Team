@@ -5,6 +5,9 @@ import logger from '../utils/logger';
 import * as postService from '../services/postService.js';
 import { createError } from 'http-errors';
 
+const { ValidationError } = require('../utils/errors/postError');
+
+
 //게시글 생성
 export const postPost = async (req, res, next) => {
   try {
@@ -12,16 +15,13 @@ export const postPost = async (req, res, next) => {
     const { title, content, categoryIdx } = req.body;
 
     //입력값 확인
-    if (title === undefined || content === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (title === undefined || content === undefined || categoryIdx === undefined) throw new ValidationError()
+    
     //쿼리실행
     let post = await postService.createPost(title, content, categoryIdx, id);
 
     return res.status(statusCode.CREATED)
-      .send(util.success(statusCode.CREATED, responseMessage.CREATE_POST_SUCCESS, { id: post._id }));
+              .send(util.success(responseMessage.CREATE_POST_SUCCESS, { id: post._id }));
   } catch (err) {
     next(err);
   }
