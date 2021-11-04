@@ -1,5 +1,5 @@
-import express from 'express';
-import routes from '../globals/routes.js';
+const express = require('express');
+const routes = require('../globals/routes.js');
 
 const globalRouter = express.Router();
 
@@ -7,4 +7,4 @@ globalRouter.get(routes.root, function (req, res, next) {
   res.send("HelloWorld");
 });
 
-export default globalRouter;
+module.exports = globalRouter;

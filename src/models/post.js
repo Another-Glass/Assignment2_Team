@@ -1,7 +1,6 @@
-import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
-import Comment from './commentModel.js';
-const autoIdSetter = require('./autoIdSetter').autoIdSetter;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const autoIdSetter = require('./autoIdSetter');
 
 const PostSchema = new mongoose.Schema({
   _id: Number,
@@ -34,4 +33,4 @@ PostSchema.virtual('comments', {
 
 autoIdSetter(PostSchema, mongoose, 'post', '_id');
 
-export default mongoose.model("Post", PostSchema);
+module.exports = mongoose.model("Post", PostSchema);

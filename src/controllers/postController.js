@@ -1,15 +1,13 @@
-import util from '../utils/resFormatter.js';
-import { statusCode, responseMessage } from '../globals/*';
-import logger from '../utils/logger';
+const { resFormatter, logger } = require('../utils');
+const { statusCode, responseMessage } = require('../globals');
 
-import * as postService from '../services/postService.js';
-import { createError } from 'http-errors';
+const postService = require('../services/postService.js');
 
 const { ValidationError, NotMatchedPostError, UnAuthorizedError } = require('../utils/errors/postError');
 
 
 //게시글 생성
-export const postPost = async (req, res, next) => {
+exports.postPost = async (req, res, next) => {
   try {
     const id = req.decoded;
     const { title, content, categoryIdx } = req.body;
@@ -28,7 +26,7 @@ export const postPost = async (req, res, next) => {
 }
 
 //게시글 조회
-export const getPost = async (req, res, next) => {
+exports.getPost = async (req, res) => {
   try {
     const { postId } = req.params;
 
@@ -57,7 +55,7 @@ export const getPost = async (req, res, next) => {
 }
 
 //게시글 수정
-export const putPost = async (req, res, next) => {
+exports.putPost = async (req, res) => {
   try {
     const id = req.decoded;
     const { postId } = req.params;
@@ -88,7 +86,7 @@ export const putPost = async (req, res, next) => {
 }
 
 //게시글 삭제
-export const deletePost = async (req, res, next) => {
+exports.deletePost = async (req, res) => {
   try {
     const id = req.decoded;
     const { postId } = req.params;
@@ -116,7 +114,7 @@ export const deletePost = async (req, res, next) => {
 }
 
 //게시글 검색
-export const getPostList = async (req, res, next) => {
+exports.getPostList = async (req, res) => {
   try {
     const { offset, limit } = req.query;
 
@@ -133,7 +131,7 @@ export const getPostList = async (req, res, next) => {
   }
 }
 
-export const getSearchPost = async (req, res, next) => {
+exports.getSearchPost = async (req, res) => {
   try {
     const { categoryId } = req.params;
     const { offset, limit, title, content } = req.query;

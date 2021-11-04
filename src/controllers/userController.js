@@ -1,12 +1,13 @@
-import util from '../utils/resFormatter.js';
-import { statusCode, responseMessage } from '../globals/*';
-import * as userService from '../services/userService.js';
-import encryption from '../libs/encryption.js';
-import jwt from '../libs/jwt.js';
+const { statusCode, responseMessage } = require('../globals');
+const encryption = require('../libs/encryption.js');
+const jwt = require('../libs/jwt.js');
+const { resFormatter, logger } = require('../utils');
 const { ValidationError, DuplicatedError, PasswordMissMatchError, NotMatchedUserError } = require('../utils/errors/userError');
 
+const userService = require('../services/userService.js');
+
 //회원가입
-export const postSignup = async (req, res, next) => {
+exports.postSignup = async (req, res) => {
   try {
     const { name, email, password, password2 } = req.body;
 
@@ -38,7 +39,7 @@ export const postSignup = async (req, res, next) => {
 }
 
 //토큰 생성
-export const postSignin = async (req, res, next) => {
+exports.postSignin = async (req, res) => {
   try {
     const { email, password } = req.body;
 

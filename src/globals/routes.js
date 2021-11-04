@@ -28,5 +28,4 @@ const routes = {
   commentDetail: COMMENT_DETAIL,
   comment: COMMENT,
 }
-
-export default routes;
+module.exports = routes;

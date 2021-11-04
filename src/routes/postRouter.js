@@ -1,9 +1,9 @@
-import express from "express";
-import routes from '../globals/routes.js';
+const express = require("express");
+const routes = require('../globals').routes;
 
-import { checkToken } from '../middlewares/auth.js';
-import * as postController from '../controllers/postController.js';
-import * as commentController from '../controllers/commentController.js';
+const { checkToken } = require('../middlewares/auth.js');
+const postController = require('../controllers/postController.js');
+const commentController = require('../controllers/commentController.js');
 
 const postRouter = express.Router();
 
@@ -35,4 +35,4 @@ postRouter.delete(routes.postDetail + routes.comment + routes.commentDetail, che
 postRouter.put(routes.postDetail + routes.comment + routes.commentDetail, checkToken, commentController.putComment);
 
 
-export default postRouter;
+module.exports = postRouter;
