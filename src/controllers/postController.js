@@ -116,42 +116,36 @@ export const deletePost = async (req, res, next) => {
 }
 
 //게시글 검색
-export const getPostList = async (req, res) => {
+export const getPostList = async (req, res, next) => {
   try {
     const { offset, limit } = req.query;
 
     //입력값 확인
-    if (offset === undefined || limit === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (offset === undefined || limit === undefined) throw new ValidationError()
+    
     //쿼리 실행
     const postList = await postService.readPostList(Number(offset), Number(limit));
 
     return res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, responseMessage.READ_POST_SUCCESS, postList));
+              .send(util.success(responseMessage.READ_POST_SUCCESS, postList));
   } catch (err) {
     next(err);
   }
 }
 
-export const getSearchPost = async (req, res) => {
+export const getSearchPost = async (req, res, next) => {
   try {
     const { categoryId } = req.params;
     const { offset, limit, title, content } = req.query;
 
     //입력값 확인
-    if (offset === undefined || limit === undefined) {
-      return res.status(statusCode.BAD_REQUEST)
-        .send(util.fail(statusCode.BAD_REQUEST, responseMessage.NULL_VALUE));
-    }
-
+    if (offset === undefined || limit === undefined) throw new ValidationError()
+    
     //쿼리 실행
     const postSearch = await postService.searchPost(categoryId, offset, limit, title, content);
 
     return res.status(statusCode.OK)
-      .send(util.success(statusCode.OK, responseMessage.READ_POST_SUCCESS, postSearch));
+              .send(util.success(responseMessage.READ_POST_SUCCESS, postSearch));
   } catch (err) {
     next(err);
   }
