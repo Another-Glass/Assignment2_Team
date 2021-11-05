@@ -77,6 +77,10 @@
         }
 
 */
+
+
+jest.setTimeout(60 * 60 * 1000) // 일단 1시간
+
 const supertest = require('supertest');
 const responseMessage = require('../../globals/responseMessage');
 const statusCode = require('../../globals/statusCode');
@@ -89,7 +93,7 @@ const testClient = supertest(host);
 
 let adminInfo = {
     // admin의 jwt등 admin 계정을 계속 사용하기 위한 정보들
-    jwt: undefined // jwt 토큰 저장
+    jwt: "" // jwt 토큰 저장
 }
 
 let menuInfo = [
@@ -100,9 +104,9 @@ let tagInfo = [
     // 태그들의 id 정보.
 ]
 
-describe("prepare", async () => {
+describe("prepare", () => {
     try {
-        await test("admin account", async () => {
+        test("admin account", async () => {
 
             try {
                 /*
@@ -136,80 +140,88 @@ describe("prepare", async () => {
                 expect(resSI.body.success).toBe(true)
                 expect(resSI.body.message).toBe(responseMessage.LOGIN_SUCCESS)
                 var jwtToken = resSI.body.data.accessToken
-                adminInfo.jwt = jwtToken
+                adminInfo.jwt = jwtToken ?? ""
                 expect(jwtToken).toBeDefined();
             } catch (err) {
                 console.log(err)
             }
 
         })
-        await test("check menus and tags", async () => {
+        test("check menus and tags", async () => {
 
             // 등록된 총 메뉴 갯수를 확인하는 반복
-            var allMenuPromise = new Promise((resolve, reject) => {
+            var allMenuPromise = new Promise(async (resolve, reject) => {
                 var iterator = 0;
 
                 while (iterator != -1) {
-                    const pagedMenu = await testClient
-                        .get(`/menus?page=${iterator}`)
-                        //.set("Content-Type", "application/json")
-                        .set("Authorization", adminInfo.jwt)
-                        .end()
+                    try {
+                        const pagedMenu = await testClient
+                            .get(`/menus?page=${iterator}`)
+                            //.set("Content-Type", "application/json")
+                            .set("Authorization", adminInfo.jwt)
+                            .send()
 
-                    if (pagedMenu.status == statusCode.OK) {
+                        if (pagedMenu.status == statusCode.OK) {
 
-                        // 현재 페이지 메뉴정보 추출 및 메모리 기록
-                        var menus = pagedMenu.body.data
-                        menus.forEach((ele, idx, arr) => {
-                            var menu = {
-                                id: ele.id,
-                                items: [],
-                                tags: []
-                            }
-                            ele.items.forEach((ele, idx, arr) => {
-                                menu.items.push(ele.id)
-                            })
-                            ele.tags.forEach((ele, idx, arr) => {
-                                menu.tags.push(ele.id)
-                            })
-                            menuInfo.push(menu)
+                            // 현재 페이지 메뉴정보 추출 및 메모리 기록
+                            var menus = pagedMenu.body.data
+                            menus.forEach((ele, idx, arr) => {
+                                var menu = {
+                                    id: ele.id,
+                                    items: [],
+                                    tags: []
+                                }
+                                ele.items.forEach((ele, idx, arr) => {
+                                    menu.items.push(ele.id)
+                                })
+                                ele.tags.forEach((ele, idx, arr) => {
+                                    menu.tags.push(ele.id)
+                                })
+                                menuInfo.push(menu)
 
-                        });
-                        iterator++;
+                            });
+                            iterator++;
 
-                        expect(pagedMenu.status).toBe(statusCode.OK)
-                        expect(pagedMenu.body.success).toBe(true)
-                        expect(pagedMenu.body.message).toBe(responseMessage.Somename) // TODO
-
-
+                            expect(pagedMenu.status).toBe(statusCode.OK)
+                            expect(pagedMenu.body.success).toBe(true)
+                            expect(pagedMenu.body.message).toBe(responseMessage.Somename) // TODO
 
 
-                    } else {
-                        expect(pagedMenu.status).not.toBe(statusCode.OK)
-                        iterator = -1;
+
+
+                        } else {
+                            expect(pagedMenu.status).not.toBe(statusCode.OK)
+                            iterator = -1;
+                        }
+                    } catch (err) {
+                        console.log(err)
                     }
                 }
                 resolve()
             })
 
             //등록된 총 태그 갯수를 확인하는 반복
-            var allTagPromise = new Promise((resolve, reject) => {
-                const tagRes = await testClient
-                    .get(`/tags`)
-                    //.set("Content-Type", "application/json")
-                    .set("Authorization", adminInfo.jwt)
-                    .end()
-                if (tagRes.status == statusCode.OK) {
-                    tagRes.body.data.forEach((ele, idx, arr) => {
-                        tagInfo.push(ele.id)
-                    })
-                    resolve()
-                    expect(tagRes.status).toBe(statusCode.OK)
-                } else {
-                    reject(new Error(`
+            var allTagPromise = new Promise(async (resolve, reject) => {
+                try {
+                    const tagRes = await testClient
+                        .get(`/tags`)
+                        //.set("Content-Type", "application/json")
+                        .set("Authorization", adminInfo.jwt)
+                        .send()
+                    if (tagRes.status == statusCode.OK) {
+                        tagRes.body.data.forEach((ele, idx, arr) => {
+                            tagInfo.push(ele.id)
+                        })
+                        resolve()
+                        expect(tagRes.status).toBe(statusCode.OK)
+                    } else {
+                        reject(new Error(`
                     Unexpected response status code
                         expected : ${statusCode.OK}
                         received : ${tagRes.status}`))
+                    }
+                } catch (err) {
+                    console.log(err)
                 }
             })
 
@@ -217,10 +229,10 @@ describe("prepare", async () => {
                 await Promise.all([allMenuPromise, allTagPromise])
             } catch (err) {
                 console.log(err)
-                throw err;
+                
             }
         })
-        await test("deploy menus and tags", async () => {
+        test("deploy menus and tags", async () => {
             var menuCount = menuInfo.length;
             var tagCount = tagInfo.length;
 
@@ -232,92 +244,96 @@ describe("prepare", async () => {
 
             // 메뉴를 보충
             while (menuCount < menuGoal) {
-                var menuIncreasePromise = new Promise((resolve, reject) => {
-                    const postMenuRes = await testClient
-                        .post(`/menus`)
-                        .set("Content-Type", "application/json")
-                        .set("Authorization", adminInfo.jwt)
-                        .send({
-                            category: `category${menuCount}`,
-                            name: `name${menuCount}`,
-                            description: `description${menuCount}`
-                        })
+                var menuIncreasePromise = new Promise(async (resolve, reject) => {
+                    try {
+                        const postMenuRes = await testClient
+                            .post(`/menus`)
+                            .set("Content-Type", "application/json")
+                            .set("Authorization", adminInfo.jwt)
+                            .send({
+                                category: `category${menuCount}`,
+                                name: `name${menuCount}`,
+                                description: `description${menuCount}`
+                            })
 
-                    if (postMenuRes.status == statusCode.CREATED) {
-                        var newMenu = {
-                            id: postMenuRes.body.data.id,
-                            items: [],
-                            tags: []
-                        }
+                        if (postMenuRes.status == statusCode.CREATED) {
+                            var newMenu = {
+                                id: postMenuRes.body.data.id,
+                                items: [],
+                                tags: []
+                            }
 
-                        menuInfo.push(newMenu)
+                            menuInfo.push(newMenu)
 
 
-                        // 실제 Promise 실행 처리는 Tag 추가를 먼저 하기 때문에 전체 태그중에 선택됨
-                        var forShuffle = tagInfo.slice()
-                        var deployingTag = forShuffle.sort(() => { 0.5 - Math.random() }).slice(0, n)
+                            // 실제 Promise 실행 처리는 Tag 추가를 먼저 하기 때문에 전체 태그중에 선택됨
+                            var forShuffle = tagInfo.slice()
+                            var deployingTag = forShuffle.sort(() => { 0.5 - Math.random() }).slice(0, n)
 
-                        for (var i = 0; i < config.prepare.initialitemAndTag; i++) {
-                            testClient
-                                .post(`/menus/${menu.id}/tags`)
-                                //.set("Content-Type", "application/json")
-                                .set("Authorization", adminInfo.jwt)
-                                .send({
-                                    tags: deployingTag[i]
-                                })
-                                .then(attatchTag => {
-                                    //TODO Tag 등록후 필요한 후처리?
-                                    //일단 이거는 아무것도 안할래
-                                    //태그 제대로 묶였겠지
-                                    if (attatchTag.status == statusCode.CREATED) {
-                                        newMenu.tags.push(deployingTag[i])
-                                    } else {
-                                        throw new Error(`
+                            for (var i = 0; i < config.prepare.initialitemAndTag; i++) {
+                                testClient
+                                    .post(`/menus/${menu.id}/tags`)
+                                    //.set("Content-Type", "application/json")
+                                    .set("Authorization", adminInfo.jwt)
+                                    .send({
+                                        tags: deployingTag[i]
+                                    })
+                                    .then(attatchTag => {
+                                        //TODO Tag 등록후 필요한 후처리?
+                                        //일단 이거는 아무것도 안할래
+                                        //태그 제대로 묶였겠지
+                                        if (attatchTag.status == statusCode.CREATED) {
+                                            newMenu.tags.push(deployingTag[i])
+                                        } else {
+                                            console.log(new Error(`
                                     Unexpected response status code
                                         expected : ${statusCode.CREATED}
-                                        received : ${attatchTag.status}`)
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                        }
+                                        received : ${attatchTag.status}`))
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                    })
+                            }
 
-                        for (var i = 0; i < config.prepare.initialitemAndTag; i++) {
-                            testClient
-                                .post(`/menus/${menu.id}/items`)
-                                //.set("Content-Type", "application/json")
-                                .set("Authorization", adminInfo.jwt)
-                                .send({
-                                    size: `size${i}`,
-                                    name: `name${i}`,
-                                    price: i * 1000
-                                })
-                                .then(attatchItem => {
-                                    //TODO Item 등록후 필요한 후처리?
-                                    //일단 이거는 아무것도 안할래
-                                    //아이템 제대로 묶였겠지
-                                    if (attatchItem.status == statusCode.CREATED) {
-                                        newMenu.items.push(attatchItem.body.data.id)
-                                    } else {
-                                        throw new Error(`
+                            for (var i = 0; i < config.prepare.initialitemAndTag; i++) {
+                                testClient
+                                    .post(`/menus/${menu.id}/items`)
+                                    //.set("Content-Type", "application/json")
+                                    .set("Authorization", adminInfo.jwt)
+                                    .send({
+                                        size: `size${i}`,
+                                        name: `name${i}`,
+                                        price: i * 1000
+                                    })
+                                    .then(attatchItem => {
+                                        //TODO Item 등록후 필요한 후처리?
+                                        //일단 이거는 아무것도 안할래
+                                        //아이템 제대로 묶였겠지
+                                        if (attatchItem.status == statusCode.CREATED) {
+                                            newMenu.items.push(attatchItem.body.data.id)
+                                        } else {
+                                            throw new Error(`
                                         Unexpected response status code
                                             expected : ${statusCode.CREATED}
                                             received : ${attatchItem.status}`)
-                                    }
-                                })
-                                .catch(err => {
-                                    console.log(err)
-                                })
-                        }
-                        expect(postMenuRes.status).toBe(statusCode.CREATED)
-                        resolve(newMenu)
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log(err)
+                                    })
+                            }
+                            expect(postMenuRes.status).toBe(statusCode.CREATED)
+                            resolve(newMenu)
 
-                    } else {
-                        reject(new Error(`
+                        } else {
+                            reject(new Error(`
                         Unexpected response status code
                             expected : ${statusCode.CREATED}
                             received : ${postMenuRes.status}`))
+                        }
+                    } catch (err) {
+                        console.log(err)
                     }
                 })
                 menuCount++;
@@ -325,26 +341,30 @@ describe("prepare", async () => {
             }
 
             while (tagCount < tagGoal) {
-                var tagIncreasePromise = new Promise((resolve, reject) => {
-                    const postTagRes = await testClient
-                        .post(`/tags`)
-                        .set("Content-Type", "application/json")
-                        .set("Authorization", adminInfo.jwt)
-                        .send({
-                            category: `category${tagCount}`,
-                            name: `name${tagCount}`,
-                            description: `description${tagCount}`
-                        })
+                var tagIncreasePromise = new Promise(async (resolve, reject) => {
+                    try {
+                        const postTagRes = await testClient
+                            .post(`/tags`)
+                            .set("Content-Type", "application/json")
+                            .set("Authorization", adminInfo.jwt)
+                            .send({
+                                category: `category${tagCount}`,
+                                name: `name${tagCount}`,
+                                description: `description${tagCount}`
+                            })
 
-                    if (postTagRes.status == statusCode.CREATED) {
-                        tagInfo.push(postTagRes.body.data.id)
-                        expect(postTagRes.status).toBe(statusCode.CREATED)
-                        resolve(postTagRes.body.data.id)
-                    } else {
-                        reject(new Error(`
+                        if (postTagRes.status == statusCode.CREATED) {
+                            tagInfo.push(postTagRes.body.data.id)
+                            expect(postTagRes.status).toBe(statusCode.CREATED)
+                            resolve(postTagRes.body.data.id)
+                        } else {
+                            reject(new Error(`
                     Unexpected response status code
                         expected : ${statusCode.CREATED}
                         received : ${postTagRes.status}`))
+                        }
+                    } catch (err) {
+                        console.log(err)
                     }
                 })
 
@@ -360,12 +380,8 @@ describe("prepare", async () => {
             }
             catch (err) {
                 console.log(err)
-                throw err
+                
             }
-
-
-
-            // 태그를 보충
         })
     } catch (err) {
         console.log(err)
