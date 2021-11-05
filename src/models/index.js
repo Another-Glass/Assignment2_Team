@@ -35,16 +35,37 @@ Object.keys(modules).forEach(modelName => {
 modules.sequelize = sequelize;
 modules.Sequelize = Sequelize;
 
-const connectDB = async () => {
-  try {
-    await modules.sequelize.sync();
-    logger.log('MySQL connected ...');
-  } catch (err) {
+// const connectDB = async () => {
+//   try {
+//     await modules.sequelize.authenticate();
+//     await modules.sequelize.sync({ alter: true });
+//     logger.log('MySQL connected ...');
+//   } catch (err) {
+//     console.error(err.message);
+//     process.exit(1);
+//   }
+// };
+
+modules.sequelize
+  .authenticate()
+  .then(() => {
+    modules.sequelize
+      .sync()
+      .then(() => {
+        logger.log('MySQL connected ...');
+      })
+      .catch(err => {
+        console.error(err.message);
+        process.exit(1);
+      });
+  })
+  .catch(err => {
     console.error(err.message);
     process.exit(1);
-  }
-};
+  });
 
-connectDB();
+// (async () => {
+//   await connectDB();
+// })();
 
 module.exports = modules;
