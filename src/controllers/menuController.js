@@ -120,7 +120,7 @@ exports.getMenuList = async (req, res, next) => {
     const limit = 5;
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
-    if (page === undefined) throw new ValidationError()
+    if (isNaN(page)) throw new ValidationError()
 
     //쿼리 실행
     const menuList = await menuService.readMenuList(page, limit);
