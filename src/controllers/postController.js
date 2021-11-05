@@ -62,7 +62,7 @@ exports.putPost = async (req, res, next) => {
     const { title, content, categoryIdx } = req.body;
 
     //입력값 확인
-    if (postId === undefined || (title === undefined && content === undefined && categoryIdx == undefined)) {
+    if (postId === undefined || title === undefined || content === undefined || categoryIdx == undefined) {
       throw new ValidationError();
     }
 
