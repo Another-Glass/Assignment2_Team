@@ -13,7 +13,6 @@ exports.postUser = async (req, res, next) => {
   try {
     const { email, password, isAdmin } = req.body;
 
-
     //입력값 확인
     if (email === undefined || password === undefined) {
       throw new ValidationError();
