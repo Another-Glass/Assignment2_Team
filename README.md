@@ -1,6 +1,6 @@
 <div align="center">
 
-  # 원티드 백엔드 프리온보딩 2차 과제 
+  # 원티드 백엔드 프리온보딩 2차 과제 - 프레시코드
 
   <img height="400" width="700" src="https://user-images.githubusercontent.com/59385491/139865333-05dabf0a-e283-4e51-94d9-8a42e6acbb7b.jpeg">
 
@@ -33,7 +33,7 @@
 
 이 레포지토리는 [원티드 프리온보딩 백엔드 코스](https://www.wanted.co.kr/events/pre_onboarding_course_4) 2차 과제를 위해 만들어졌습니다. 
 
--   일정 : 2021년 11월 4일(목) 오후 6시 ~ 11월 5일(토) 오전 10시
+-   일정 : 2021년 11월 4일(목) 오후 6시 ~ 11월 6일(토) 오전 10시
 
 <br>
 <br>
