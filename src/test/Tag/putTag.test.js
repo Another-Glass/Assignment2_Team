@@ -101,7 +101,7 @@ describe('태그 수정하기', () => {
         )
       expect(res.status).toBe(statusCode.NOT_FOUND)
       expect(res.body.success).toBe(false)
-      expect(res.body.message).toBe(responseMessage.NULL_VALUE)
+      expect(res.body.message).toBe(responseMessage.ENTITY_NOT_EXIST)
     })
 })
   
