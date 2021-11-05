@@ -67,7 +67,6 @@ exports.deleteTag = async id => {
 exports.readTagList = async () => {
   try {
     const allTags = await models.tag.findAll();
-    console.log("hi", allTags);
     return allTags;
   } catch (err) {
     throw err;
