@@ -10,8 +10,6 @@ const itemController = require('../controllers/itemController.js');
 const menuRouter = express.Router();
 
 
-//default = "/menus"
-
 //전체 메뉴 조회
 menuRouter.get(routes.root, menuController.getMenuList);
 
@@ -29,20 +27,20 @@ menuRouter.delete(routes.menuDetail, checkToken, menuController.deleteMenu);
 
 
 //태그 연결 추가(관리자 전용)
-menuRouter.post(routes.menuDetail + routes.tag, checkToken, tagController.postConnectTag);
+menuRouter.post(routes.menuDetail + routes.tag + routes.tagDetail, checkToken, tagController.postConnectTag);
 
 //태그 연결 삭제(관리자 전용)
-menuRouter.delete(routes.menuDetail + routes.tag, checkToken, tagController.deleteConnectedTag);
+menuRouter.delete(routes.menuDetail + routes.tag + routes.tagDetail, checkToken, tagController.deleteConnectedTag);
 
 
 // 아이템 생성(관리자 전용)
 menuRouter.post(routes.menuDetail + routes.item, checkToken, itemController.postItem);
 
 // 아이템 수정(관리자 전용)
-menuRouter.put(routes.menuDetail + routes.item + routes.menuDetail, checkToken, itemController.updateItem);
+menuRouter.put(routes.menuDetail + routes.item + routes.itemDetail, checkToken, itemController.updateItem);
 
 // 아이템 삭제(관리자 전용)
-menuRouter.delete(routes.menuDetail + routes.item + routes.menuDetail, checkToken, itemController.deleteItem);
+menuRouter.delete(routes.menuDetail + routes.item + routes.itemDetail, checkToken, itemController.deleteItem);
 
 
 

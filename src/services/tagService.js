@@ -1,5 +1,6 @@
 const models = require('../models');
 const { EntityNotExistError } = require('../utils/errors/tagError');
+const logger = require('../utils/logger');
 
 exports.createTag = async (type, name) => {
   try {
@@ -36,6 +37,8 @@ exports.deleteTag = async id => {
       where: { id },
     });
 
+    logger.log("as" + tags);
+
     return deletedTag;
   } catch (err) {
     throw err;
@@ -51,6 +54,17 @@ exports.readTagList = async () => {
     throw err;
   }
 };
+
+exports.readTagList = async (tagId) => {
+  try {
+    const tag = await models.tag.findByPk(tagId);
+
+    return tag;
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 exports.deleteConnectedMenu = async (menuId, tagId) => {
   try {

@@ -14,17 +14,18 @@ exports.createItem = async (menuId, size, name, price) => {
   }
 };
 
-exports.updateItem = async (id, size, name, price) => {
+exports.updateItem = async (id, size, name, price, isSold) => {
   try {
     const updatedItem = await models.item.update(
       {
         size,
         name,
         price,
+        isSold
       },
       {
         where: { id },
-      },
+      }
     );
     return updatedItem;
   } catch (err) {
@@ -43,3 +44,11 @@ exports.deleteItem = async id => {
   }
 };
 
+exports.readItem = async (itemId) => {
+  try {
+    const newItem = await models.item.findByPk(itemId);
+    return newItem;
+  } catch (err) {
+    throw err;
+  }
+};

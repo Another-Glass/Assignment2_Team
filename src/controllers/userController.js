@@ -24,13 +24,10 @@ exports.postUser = async (req, res, next) => {
     //이메일 양식 일치/불일치 여부 : isMatch가 0이면 일치, -1이면 불일치
     const regExp = /^((\w|[\-\.])+)@((\w|[\-\.])+)\.([A-Za-z]+)$/;
     const isMatch = email.search(regExp);
-
     if (isMatch === -1) throw new ValidationError();
 
     //이메일 중복 여부
     const isEmail = await userService.checkEmail(emailUsername, emailDomain);
-
-    //이메일 중복
     if (isEmail) throw new DuplicatedError()
 
     //암호화
@@ -47,6 +44,7 @@ exports.postUser = async (req, res, next) => {
   }
 }
 
+
 //토큰 생성(로그인)
 exports.postToken = async (req, res, next) => {
   try {
@@ -58,14 +56,12 @@ exports.postToken = async (req, res, next) => {
     const emailUsername = email.split('@')[0];
     const emailDomain = email.split('@')[1];
 
+    //이메일 존재 여부
     const isEmail = await userService.checkEmail(emailUsername, emailDomain);
-
-    //이메일 존재
     if (!isEmail) throw new NotMatchedUserError();
 
     //확인용 암호화
     const { salt, password: realPassword } = isEmail;
-
     const inputPassword = encryption.encrypt(password, salt);
 
     //패스워드 불일치

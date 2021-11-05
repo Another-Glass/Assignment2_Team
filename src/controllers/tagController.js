@@ -3,6 +3,8 @@ const { statusCode, responseMessage } = require('../globals');
 const { ValidationError, NotExistError } = require('../utils/errors/tagError');
 
 const tagService = require('../services/tagService.js');
+const logger = require('../utils/logger');
+
 
 exports.postTag = async (req, res, next) => {
 	try {
@@ -12,31 +14,31 @@ exports.postTag = async (req, res, next) => {
 		if (type === undefined || name === undefined) throw new ValidationError();
 
 		//쿼리실행
-		let id = await tagService.createTag(type, name);
+		let tag = await tagService.createTag(type, name);
 
 		return res.status(statusCode.CREATED)
-			.send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { id: id }))
+			.send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { id: tag.id }))
 
 	} catch (err) {
 		next(err);
 	}
 };
 
+
 // 태그 수정
 exports.updateTag = async (req, res, next) => {
 	try {
 		const { type, name } = req.body;
-		const paramId = req.params.tagId;
+		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
-		if (type === undefined && name === undefined && paramId === undefined) throw new ValidationError();
+		if (type === undefined && name === undefined && isNaN(tagId)) throw new ValidationError();
 
 		//쿼리실행
-		let id = await tagService.updateTag(paramId, type, name);
+		let result = await tagService.updateTag(tagId, type, name);
 
-
-		//id 유무 확인
-		if (!id) throw new NotExistError();
+		//DB에 없으면 에러
+		if (!result[0]) throw new EntityNotExistError();
 
 		return res.status(statusCode.OK)
 			.send(resFormatter.success(responseMessage.UPDATE_TAG_SUCCESS));
@@ -46,19 +48,19 @@ exports.updateTag = async (req, res, next) => {
 	}
 }
 
+
 // 태그 삭제
 exports.deleteTag = async (req, res, next) => {
 	try {
-		const paramId = req.params.tagId;
+		const tagId = Number(req.params.tagId);
 
-		//태그 확인
-		if (paramId === undefined) throw new ValidationError();
+		//입력값 확인
+		if (isNaN(tagId)) throw new ValidationError();
 
-		const id = await tagService.deleteTag(paramId);
-
+		let result = await tagService.deleteTag(tagId);
 
 		//id 유무 확인
-		if (!id) throw new NotExistError();
+		if (!result) throw new NotExistError();
 
 		return res.status(statusCode.OK)
 			.send(resFormatter.success(responseMessage.DELETE_TAG_SUCCESS));
@@ -68,36 +70,35 @@ exports.deleteTag = async (req, res, next) => {
 	}
 }
 
+
 // 태그 조회
 exports.getTagList = async (req, res, next) => {
 	try {
 		//쿼리 실행
-		const tag = await tagService.readTagList();
-
-		//태그 유무 확인
-		if (!tag) throw new NotExistError();
+		let tags = await tagService.readTagList();
 
 		return res.status(statusCode.OK)
-			.send(resFormatter.success(responseMessage.READ_TAG_SUCCESS, tag));
+			.send(resFormatter.success(responseMessage.READ_TAG_SUCCESS, tags));
 	} catch (err) {
 		next(err);
 	}
 }
 
+
 // 태그 연결 추가
 exports.postConnectTag = async (req, res, next) => {
 	try {
-		const menuId = req.params.menuId;
-		const tagId = req.body.tagId;
+		const menuId = Number(req.params.tagId);
+		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
-		if (menuId === undefined || tagId === undefined) throw new ValidationError();
+		if (isNaN(menuId) || isNaN(tagId)) throw new ValidationError();
 
 		//쿼리 실행
-		const menu = await tagService.connectToMenu(menuId, tagId);
+		let result = await tagService.connectToMenu(menuId, tagId);
 
-		//메뉴 유무 확인
-		if (!menu) throw new NotExistError();
+		//성공 확인
+		if (!result) throw new NotExistError();
 
 		return res.status(statusCode.CREATED)
 			.send(resFormatter.success(responseMessage.CONNECT_TAG_SUCCESS));
@@ -106,20 +107,21 @@ exports.postConnectTag = async (req, res, next) => {
 	}
 };
 
+
 // 태그 연결 삭제
 exports.deleteConnectedTag = async (req, res, next) => {
 	try {
-		const menuId = req.params.menuId;
-		const tagId = req.body.tagId;
+		const menuId = Number(req.params.tagId);
+		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
-		if (menuId === undefined || tagId === undefined) throw new ValidationError();
+		if (isNaN(menuId) || isNaN(tagId)) throw new ValidationError();
 
 		//쿼리 실행
-		const menu = await tagService.deleteConnectedMenu(menuId, tagId);
+		let result = await tagService.deleteConnectedMenu(menuId, tagId);
 
-		//메뉴 유무 확인
-		if (!menu) throw new NotExistError();
+		//성공 확인
+		if (!result) throw new NotExistError();
 
 		return res.status(statusCode.OK)
 			.send(resFormatter.success(responseMessage.DECONNECT_TAG_SUCCESS));

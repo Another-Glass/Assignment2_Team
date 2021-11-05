@@ -8,7 +8,7 @@ class ValidationError extends Error {
     super(message);
     this.status = status;
   }
-};
+}
 
 //Code : 404 menuId에 해당하는 메뉴가 존재하지 않음
 

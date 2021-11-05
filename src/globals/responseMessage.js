@@ -10,6 +10,7 @@ module.exports = {
   DUPLICATE_ERROR: '중복된 요청입니다.',
   PERMISSION_ERROR: '권한이 없습니다.',
   ENTITY_NOT_EXIST: "DB에 없는 데이터 관련 요청입니다.",
+  NO_PAGE_ERROR: "해당 라우트는 존재하지 않습니다.",
 
   // token
   EMPTY_TOKEN: '토큰 값이 없습니다.',

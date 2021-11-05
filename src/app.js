@@ -5,13 +5,14 @@ const createError = require('http-errors');
 const cookieParser = require('cookie-parser');
 
 const { logger, resFormatter } = require('./utils');
-const { statusCode, routes, responseMessage } = require('./globals')
+const { statusCode, routes, responseMessage } = require('./globals');
 
 const globalRouter = require('./routes/globalRouter');
 const userRouter = require('./routes/userRouter');
 const tokenRouter = require('./routes/tokenRouter');
 const menuRouter = require('./routes/menuRouter');
 const tagRouter = require('./routes/tagRouter');
+const { NoPageError } = require('./utils/errors/commonError');
 
 //DB연결
 
@@ -35,9 +36,8 @@ app.use(routes.menu, menuRouter);
 app.use(routes.tag, tagRouter);
 
 // 아래는 에러 핸들링 함수들
-
 app.use(function (req, res, next) {
-  next(createError(404));
+  throw new NoPageError();
 });
 
 app.use(function (err, req, res, next) {
