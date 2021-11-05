@@ -5,14 +5,14 @@ const menuService = require('../services/menuService.js');
 
 const { ValidationError, NotMatchedPostError, UnAuthorizedError, NotNumberError } = require('../utils/errors/menuError');
 
-/* decoded.id
-decoded.name
+/* decoded.username
+decoded.domain
 decoded.isAdmin */
 //메뉴 추가
 exports.postMenu = async (req, res, next) => {
   try {
     const isAdmin = req.decoded.isAdmin;
-    const { category , name , description  } = req.body;
+    const { category, name, description } = req.body;
 
     //관리자가 아니면 에러처리 UNAUTHORIZED: 401
     if (!isAdmin) throw new UnAuthorizedError();
@@ -22,10 +22,10 @@ exports.postMenu = async (req, res, next) => {
 
     //쿼리실행
     let menu = await menuService.createMenu(category, name, description);
-    
+
     //Respons Code : 201
     return res.status(statusCode.CREATED)
-      .send(resFormatter.success(responseMessage.CREATE_MENU_SUCCESS, { id : menu.id }));
+      .send(resFormatter.success(responseMessage.CREATE_MENU_SUCCESS, { id: menu.id }));
 
   } catch (err) {
     next(err);
@@ -49,7 +49,7 @@ exports.getMenu = async (req, res, next) => {
 
     //Response Code : 200 
     return res.status(statusCode.OK)
-      .send(resFormatter.success(responseMessage.READ_MENU_SUCCESS,  menu ));
+      .send(resFormatter.success(responseMessage.READ_MENU_SUCCESS, menu));
   } catch (err) {
     next(err);
   }
@@ -58,10 +58,9 @@ exports.getMenu = async (req, res, next) => {
 //메뉴 수정
 exports.putMenu = async (req, res, next) => {
   try {
-    const id = req.decoded.id;
     const isAdmin = req.decoded.isAdmin
     const menuId = Number(req.params.menuId);
-    const { category , name , description ,  isSold , badge } = req.body;
+    const { category, name, description, isSold, badge } = req.body;
 
     //관리자가 아니면 에러처리 UNAUTHORIZED: 401
     if (!isAdmin) throw new UnAuthorizedError();
@@ -83,7 +82,7 @@ exports.putMenu = async (req, res, next) => {
 
 
     //Response 204 NO_CONTENT
-    return res.status(statusCode.NO_CONTENT)
+    return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.UPDATE_MENU_SUCCESS));
   } catch (err) {
     next(err);
@@ -113,7 +112,7 @@ exports.deleteMenu = async (req, res, next) => {
     await menuService.deleteMenu(menuId);
 
     //Response Code : 204
-    return res.status(statusCode.NO_CONTENT)
+    return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.DELETE_MENU_SUCCESS));
   } catch (err) {
     next(err);
@@ -130,7 +129,7 @@ exports.getMenuList = async (req, res, next) => {
     if (page === undefined) throw new ValidationError()
 
     //쿼리 실행
-    const menuList = await menuService.readMenuList(page,limit);
+    const menuList = await menuService.readMenuList(page, limit);
 
     //Response Code : 200
     return res.status(statusCode.OK)

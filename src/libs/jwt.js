@@ -1,6 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken');
 const secretKey = require('../configs/secretKey.js');
 const userService = require('../services/userService.js');
+const logger = require('../utils/logger.js');
 
 const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
@@ -8,14 +9,14 @@ const TOKEN_INVALID = -2;
 module.exports = {
     sign: async user => {
         const payload = {
-            id: user.id,
-            name: user.name,
-            isAdmin: user.isAdmin
+            "domain": user.domain,
+            "username": user.username,
+            "isAdmin": user.isAdmin
         };
 
         const result = {
             accessToken: jsonwebtoken.sign(payload, secretKey.secretKey, secretKey.options),
-            refreshToken: jsonwebtoken.sign(payload, secretKey.secretKey, secretKey.refreshOptions)
+            //refreshToken: jsonwebtoken.sign(payload, secretKey.secretKey, secretKey.refreshOpti ons)
         };
 
         return result;

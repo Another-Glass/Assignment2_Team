@@ -9,7 +9,7 @@ module.exports = {
   INTERNAL_SERVER_ERROR: '서버 오류입니다.',
   DUPLICATE_ERROR: '중복된 요청입니다.',
   PERMISSION_ERROR: '권한이 없습니다.',
-  
+  ENTITY_NOT_EXIST: "DB에 없는 데이터 관련 요청입니다.",
 
   // token
   EMPTY_TOKEN: '토큰 값이 없습니다.',
@@ -35,13 +35,10 @@ module.exports = {
 
   // 메뉴
   CREATE_MENU_SUCCESS: '메뉴 추가 성공',
-  //CREATE_MENU_FAIL: '메뉴 생성 실패',
   READ_MENU_SUCCESS: '메뉴 조회 성공',
   READ_MENU_FAIL: '메뉴 조회 실패',
   UPDATE_MENU_SUCCESS: '메뉴 수정 성공',
-  //UPDATE_MENU_FAIL: '메뉴 수정 실패',
   DELETE_MENU_SUCCESS: '메뉴 삭제 성공',
-  //DELETE_MENU_FAIL: '메뉴 삭제 실패',
   NO_MENU: '해당 메뉴가 없습니다.',
 
   // 태그
@@ -49,6 +46,8 @@ module.exports = {
   UPDATE_TAG_SUCCESS: '태그 수정 성공',
   DELETE_TAG_SUCCESS: '태그 삭제 성공',
   READ_TAG_SUCCESS: '태그 조회 성공',
+  DECONNECT_TAG_SUCCESS: '태그 연결 해제 성공',
+  CONNECT_TAG_SUCCESS: '태그 연결 성공',
 
   // 아이템
   CREATE_ITEM_SUCCESS: '아이템 생성 성공',

@@ -5,21 +5,21 @@ const { ValidationError, NotExistError } = require('../utils/errors/tagError');
 const tagService = require('../services/tagService.js');
 
 exports.postTag = async (req, res, next) => {
-		try {
-			const { type, name } = req.body;
+	try {
+		const { type, name } = req.body;
 
-			//입력값 확인
-			if (type === undefined || name === undefined) throw new ValidationError();
+		//입력값 확인
+		if (type === undefined || name === undefined) throw new ValidationError();
 
-			//쿼리실행
-			let id = await tagService.createTag(type, name);
-		
-			return res.status(statusCode.CREATED)
-				.send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { id : id }))
+		//쿼리실행
+		let id = await tagService.createTag(type, name);
 
-		} catch (err) {
-			next(err);
-		}
+		return res.status(statusCode.CREATED)
+			.send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { id: id }))
+
+	} catch (err) {
+		next(err);
+	}
 };
 
 // 태그 수정
@@ -28,18 +28,18 @@ exports.updateTag = async (req, res, next) => {
 		const { type, name } = req.body;
 		const paramId = req.params.tagId;
 
-			//입력값 확인
-			if (type === undefined && name === undefined && paramId === undefined) throw new ValidationError();
+		//입력값 확인
+		if (type === undefined && name === undefined && paramId === undefined) throw new ValidationError();
 
-			//쿼리실행
-			let id = await tagService.updateTag(paramId, type, name);
+		//쿼리실행
+		let id = await tagService.updateTag(paramId, type, name);
 
 
-			//id 유무 확인
-			if (!id) throw new NotExistError();
+		//id 유무 확인
+		if (!id) throw new NotExistError();
 
-			return res.status(statusCode.NO_CONTENT)
-				.send(resFormatter.success(responseMessage.UPDATE_TAG_SUCCESS));
+		return res.status(statusCode.OK)
+			.send(resFormatter.success(responseMessage.UPDATE_TAG_SUCCESS));
 
 	} catch (err) {
 		next(err);
@@ -53,15 +53,15 @@ exports.deleteTag = async (req, res, next) => {
 
 		//태그 확인
 		if (paramId === undefined) throw new ValidationError();
-		
+
 		const id = await tagService.deleteTag(paramId);
 
 
 		//id 유무 확인
 		if (!id) throw new NotExistError();
 
-		return res.status(statusCode.NO_CONTENT)
-      .send(resFormatter.success(responseMessage.DELETE_TAG_SUCCESS));
+		return res.status(statusCode.OK)
+			.send(resFormatter.success(responseMessage.DELETE_TAG_SUCCESS));
 
 	} catch (err) {
 		next(err);
@@ -69,7 +69,7 @@ exports.deleteTag = async (req, res, next) => {
 }
 
 // 태그 조회
-exports.getTag = async (req, res, next) => {
+exports.getTagList = async (req, res, next) => {
 	try {
 		//쿼리 실행
 		const tag = await tagService.readTagList();
@@ -78,7 +78,7 @@ exports.getTag = async (req, res, next) => {
 		if (!tag) throw new NotExistError();
 
 		return res.status(statusCode.OK)
-      .send(resFormatter.success(responseMessage.READ_TAG_SUCCESS, {data: tag}));
+			.send(resFormatter.success(responseMessage.READ_TAG_SUCCESS, tag));
 	} catch (err) {
 		next(err);
 	}
@@ -92,7 +92,7 @@ exports.postConnectTag = async (req, res, next) => {
 
 		//입력값 확인
 		if (menuId === undefined || tagId === undefined) throw new ValidationError();
-		
+
 		//쿼리 실행
 		const menu = await tagService.connectToMenu(menuId, tagId);
 
@@ -100,7 +100,7 @@ exports.postConnectTag = async (req, res, next) => {
 		if (!menu) throw new NotExistError();
 
 		return res.status(statusCode.CREATED)
-      .send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { data: { result: menu }}));
+			.send(resFormatter.success(responseMessage.CONNECT_TAG_SUCCESS));
 	} catch (err) {
 		next(err);
 	}
@@ -114,15 +114,15 @@ exports.deleteConnectedTag = async (req, res, next) => {
 
 		//입력값 확인
 		if (menuId === undefined || tagId === undefined) throw new ValidationError();
-		
+
 		//쿼리 실행
 		const menu = await tagService.deleteConnectedMenu(menuId, tagId);
 
 		//메뉴 유무 확인
 		if (!menu) throw new NotExistError();
 
-		return res.status(statusCode.NO_CONTENT)
-      .send(resFormatter.success(responseMessage.DELETE_TAG_SUCCESS, { data: { result: menu }}));
+		return res.status(statusCode.OK)
+			.send(resFormatter.success(responseMessage.DECONNECT_TAG_SUCCESS));
 	} catch (err) {
 		next(err);
 	}

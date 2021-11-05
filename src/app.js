@@ -44,7 +44,7 @@ app.use(function (err, req, res, next) {
   let errCode = err.status || statusCode.INTERNAL_SERVER_ERROR;
   let message = errCode == statusCode.INTERNAL_SERVER_ERROR ? responseMessage.INTERNAL_SERVER_ERROR : err.message;
 
-  console.log("hi: ", err.message);
+  if (req.app.get('env') == "development") logger.err(err);
 
   return res.status(errCode)
     .send(resFormatter.fail(message));
