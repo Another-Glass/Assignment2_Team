@@ -65,8 +65,8 @@ exports.putMenu = async (req, res, next) => {
     if (!isAdmin) throw new UnAuthorizedError();
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
-    if (category === undefined && name === undefined && description === undefined &&
-      isSold === undefined && badge === undefined && isNaN(menuId)) {
+    if ((category === undefined && name === undefined && description === undefined &&
+      isSold === undefined && badge === undefined) || isNaN(menuId)) {
       throw new ValidationError();
     }
 
