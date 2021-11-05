@@ -14,6 +14,7 @@ const adminUser = `${process.env.ADMIN_USER}`;
 const adminPassword = `${process.env.ADMIN_PASSWORD}`;
 
 let token = '';
+let menuId;
 
 describe('토큰 생성하기', () => {
   test('토큰 생성 성공', async () => {
@@ -32,10 +33,29 @@ describe('토큰 생성하기', () => {
   })
 })
 
+describe('메뉴 생성하기', () => {
+  test('테스트 메뉴 생성 성공', async () => {
+    const res = await testClient
+      .post(`${routes.post}`)
+      .set('token', token)
+      .send(
+        {
+          "title": faker.lorem.word(),
+          "content": faker.lorem.text(),
+          "categoryIdx":1
+        }
+      )
+      expect(res.status).toBe(statusCode.CREATED)
+      expect(res.body.success).toBe(true)
+      expect(res.body.message).toBe(responseMessage.CREATE_POST_SUCCESS)
+    menuId = res.body.data.id
+  })
+})
+
 describe('메뉴 수정하기', () => {
   test('메뉴 수정 성공', async () => {
       const res = await testClient
-        .put(`${routes.post}/82`)
+        .put(`${routes.post}/${menuId}`)
         .set('token', token)
         .send(
           {
@@ -51,7 +71,7 @@ describe('메뉴 수정하기', () => {
   
     test('메뉴 수정 입력값 누락', async () => {
       const res = await testClient
-        .put(`${routes.post}/82`)
+        .put(`${routes.post}/${menuId}`)
         .set('token', token)
         .send(
           {
@@ -64,9 +84,18 @@ describe('메뉴 수정하기', () => {
       expect(res.body.message).toBe(responseMessage.NULL_VALUE)
     })
 
+    test('메뉴 삭제 성공', async () => {
+      const res = await testClient
+        .delete(`${routes.post}/${menuId}`)
+        .set('token', token)
+      expect(res.status).toBe(statusCode.OK)
+      expect(res.body.success).toBe(true)
+      expect(res.body.message).toBe(responseMessage.DELETE_POST_SUCCESS)
+    })
+
     test('메뉴가 없어서 메뉴 수정 불가', async () => {
       const res = await testClient
-        .put(`${routes.post}/9999999999`)
+        .put(`${routes.post}/${menuId}`)
         .set('token', token)
         .send(
           {
