@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const models = require('../models');
 
 /**
@@ -40,8 +41,11 @@ exports.checkEmail = async (emailUsername, emailDomain) => {
   try {
     const alreadyUser = await models.user.findOne({
       where: {
-        [Op.and]: [{ username: emailUsername }, { domain: emailDomain }],
-      },
+        [Op.and]: [
+          { username: emailUsername },
+          { domain: emailDomain }
+        ]
+      }
     });
     return alreadyUser;
   } catch (err) {
@@ -63,11 +67,11 @@ exports.signin = async (emailUsername, emailDomain, password) => {
         [Op.and]: [
           { username: emailUsername },
           { domain: emailDomain },
-          { password: password },
+          { password: password }
         ],
       },
     });
-    return user;
+    return user.dataValues;
   } catch (err) {
     throw err;
   }

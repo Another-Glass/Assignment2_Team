@@ -4,23 +4,35 @@
 const ROOT = '/';
 
 // User
-const USER = '/user';
-const USER_SIGNUP = '/signup';
-const USER_SIGNIN = '/signin';
+const USER_SIGNUP = '/user';
+const USER_SIGNIN = '/token';
 
-// Post
-const POST = '/posts';
-const POST_DETAIL = '/:postId';
-const POST_SEARCH = '/search/:categoryId';
+// Menu
+const MENU = '/menus';
+const MENU_DETAIL = '/:menuId';
+
+
+// Tag
+const TAG = '/tags';
+const TAG_DETAIL = '/:tagId';
+
+
+// Item
+const ITEM = '/items';
+const ITEM_DETAIL = '/:itemId';
+
 
 const routes = {
   root: ROOT,
-  user: USER,
-  signup: USER_SIGNUP,
-  signin: USER_SIGNIN,
-  post: POST,
-  postDetail: POST_DETAIL,
-  postSearch: POST_SEARCH,
+  user: USER_SIGNUP,
+  token: USER_SIGNIN,
+  menu: MENU,
+  menuDetail: MENU_DETAIL,
+  tag: TAG,
+  tagDetail: TAG_DETAIL,
+  item: ITEM,
+  itemDetail: ITEM_DETAIL
+
 }
 
 module.exports = routes;

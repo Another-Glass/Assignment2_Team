@@ -1,4 +1,5 @@
 const models = require('../models');
+const logger = require('../utils/logger');
 
 /**
  * 메뉴 생성
@@ -88,12 +89,12 @@ exports.deleteMenu = async menuId => {
  */
 exports.readMenuList = async (page, limit) => {
   try {
-    let offset = page * limit;
+    let offset = (page - 1) * limit;
     const menuList = await models.menu.findAll({
-      offset,
-      limit,
-      include: [{ all: true }],
+      offset: offset,
+      limit: limit,
     });
+    
     return menuList;
   } catch (err) {
     throw err;
