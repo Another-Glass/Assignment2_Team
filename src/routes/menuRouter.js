@@ -27,7 +27,7 @@ menuRouter.delete(routes.menuDetail, checkToken, menuController.deleteMenu);
 
 
 //태그 연결 추가(관리자 전용)
-menuRouter.post(routes.menuDetail + routes.tag + routes.tagDetail, checkToken, tagController.postConnectTag);
+menuRouter.post(routes.menuDetail + routes.tag, checkToken, tagController.postConnectTag);
 
 //태그 연결 삭제(관리자 전용)
 menuRouter.delete(routes.menuDetail + routes.tag + routes.tagDetail, checkToken, tagController.deleteConnectedTag);

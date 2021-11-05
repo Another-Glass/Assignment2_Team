@@ -1,6 +1,6 @@
 const { resFormatter } = require('../utils');
 const { statusCode, responseMessage } = require('../globals');
-const { ValidationError, NotExistError } = require('../utils/errors/tagError');
+const { ValidationError, NotExistError, EntityNotExistError } = require('../utils/errors/tagError');
 
 const tagService = require('../services/tagService.js');
 const logger = require('../utils/logger');
@@ -32,7 +32,7 @@ exports.updateTag = async (req, res, next) => {
 		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
-		if (type === undefined && name === undefined && isNaN(tagId)) throw new ValidationError();
+		if ((type === undefined && name === undefined) || isNaN(tagId)) throw new ValidationError();
 
 		//쿼리실행
 		let result = await tagService.updateTag(tagId, type, name);
@@ -88,15 +88,14 @@ exports.getTagList = async (req, res, next) => {
 // 태그 연결 추가
 exports.postConnectTag = async (req, res, next) => {
 	try {
-		const menuId = Number(req.params.tagId);
-		const tagId = Number(req.params.tagId);
+		const menuId = Number(req.params.menuId);
+		const tagId = Number(req.body.tagId);
 
 		//입력값 확인
 		if (isNaN(menuId) || isNaN(tagId)) throw new ValidationError();
 
 		//쿼리 실행
 		let result = await tagService.connectToMenu(menuId, tagId);
-
 		//성공 확인
 		if (!result) throw new NotExistError();
 
@@ -111,7 +110,7 @@ exports.postConnectTag = async (req, res, next) => {
 // 태그 연결 삭제
 exports.deleteConnectedTag = async (req, res, next) => {
 	try {
-		const menuId = Number(req.params.tagId);
+		const menuId = Number(req.params.menuId);
 		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
