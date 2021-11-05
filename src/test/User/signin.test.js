@@ -1,11 +1,14 @@
-const app = require('../../app');
+// const app = require('../../app');
 const supertest = require('supertest');
 const responseMessage = require('../../globals/responseMessage');
 const statusCode = require('../../globals/statusCode');
 const routes = require('../../globals/routes');
 const faker = require('faker');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const testClient = supertest(app);
+const host = `http://localhost:${process.env.PORT}`
+const testClient = supertest(host);
 
 describe('signin', () => {
   test('유저 로그인 성공', async () => {
@@ -40,7 +43,7 @@ describe('signin', () => {
       .post(`${routes.user}${routes.signin}`)
       .send(
         {
-          "email" : faker.internet.email(),
+          "email" : "test@test.com",
           "password" : "1234"
         }
       )
