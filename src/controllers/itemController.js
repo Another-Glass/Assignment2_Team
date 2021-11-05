@@ -39,7 +39,7 @@ exports.updateItem = async (req, res, next) => {
 		const itemId = Number(req.params.itemId);
 
 		//입력값 확인
-		if (size === undefined && name === undefined && price === undefined && isNaN(itemId))
+		if ((size === undefined && name === undefined && price === undefined) || isNaN(itemId))
 			throw new ValidationError();
 
 		//쿼리실행

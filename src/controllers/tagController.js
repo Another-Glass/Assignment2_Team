@@ -1,6 +1,6 @@
 const { resFormatter } = require('../utils');
 const { statusCode, responseMessage } = require('../globals');
-const { ValidationError, NotExistError } = require('../utils/errors/tagError');
+const { ValidationError, NotExistError, EntityNotExistError } = require('../utils/errors/tagError');
 
 const tagService = require('../services/tagService.js');
 const logger = require('../utils/logger');
@@ -32,7 +32,7 @@ exports.updateTag = async (req, res, next) => {
 		const tagId = Number(req.params.tagId);
 
 		//입력값 확인
-		if (type === undefined && name === undefined && isNaN(tagId)) throw new ValidationError();
+		if ((type === undefined && name === undefined) || isNaN(tagId)) throw new ValidationError();
 
 		//쿼리실행
 		let result = await tagService.updateTag(tagId, type, name);
