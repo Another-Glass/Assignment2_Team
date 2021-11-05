@@ -30,15 +30,20 @@ module.exports = {
   NO_USER: '존재하지 않는 회원입니다.',
   MISS_MATCH_PW: '비밀번호가 맞지 않습니다.',
 
-  // 게시판
-  CREATE_POST_SUCCESS: '게시글 생성 성공',
-  //CREATE_POST_FAIL: '게시글 생성 실패',
-  READ_POST_SUCCESS: '게시글 조회 성공',
-  READ_POST_FAIL: '게시글 조회 실패',
-  UPDATE_POST_SUCCESS: '게시글 수정 성공',
-  //UPDATE_POST_FAIL: '게시글 수정 실패',
-  DELETE_POST_SUCCESS: '게시글 삭제 성공',
-  //DELETE_POST_FAIL: '게시글 삭제 실패',
-  NO_POST: '해당 게시글이 없습니다.',
+  // 메뉴
+  CREATE_MENU_SUCCESS: '메뉴 추가 성공',
+  //CREATE_MENU_FAIL: '메뉴 생성 실패',
+  READ_MENU_SUCCESS: '메뉴 조회 성공',
+  READ_MENU_FAIL: '메뉴 조회 실패',
+  UPDATE_MENU_SUCCESS: '메뉴 수정 성공',
+  //UPDATE_MENU_FAIL: '메뉴 수정 실패',
+  DELETE_MENU_SUCCESS: '메뉴 삭제 성공',
+  //DELETE_MENU_FAIL: '메뉴 삭제 실패',
+  NO_MENU: '해당 메뉴가 없습니다.',
 
+  // 태그
+  CREATE_TAG_SUCCESS: '태그 생성 성공',
+  UPDATE_TAG_SUCCESS: '태그 수정 성공',
+  DELETE_TAG_SUCCESS: '태그 삭제 성공',
+  READ_TAG_SUCCESS: '태그 조회 성공',
 };
