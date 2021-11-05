@@ -67,7 +67,7 @@ exports.deleteTag = async id => {
 exports.readTagList = async () => {
   try {
     const allTags = await models.tag.findAll();
-
+    console.log("hi", allTags);
     return allTags;
   } catch (err) {
     throw err;
@@ -86,7 +86,7 @@ exports.deleteConnectedMenu = async (menuId, tagId) => {
     const selectedMenu = await models.menu.findByPk(menuId);
     const selectedTag = await models.tag.findByPk(tagId);
 
-    if (!selectedMenu || !selectedTag) throw new EntityNotExistError();
+    if (selectedMenu == undefined || selectedTag == undefined) throw new EntityNotExistError();
 
     const deletedTag = await selectedMenu.removeMenuTag(selectedTag);
 
