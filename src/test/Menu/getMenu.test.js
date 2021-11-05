@@ -7,7 +7,7 @@ const faker = require('faker');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const host = `http://localhost:${process.env.PORT}`;
+const host = `${process.env.HOST}`;
 const testClient = supertest(host);
 
 const adminUser = `${process.env.ADMIN_USER}`;
@@ -19,7 +19,7 @@ let menuId;
 describe('토큰 생성하기', () => {
   test('토큰 생성 성공', async () => {
     const res = await testClient
-      .post(`${routes.user}${routes.signin}`)
+      .post(`${routes.token}`)
       .send(
         {
           "email" : adminUser,
@@ -36,18 +36,18 @@ describe('토큰 생성하기', () => {
 describe('메뉴 생성하기', () => {
   test('테스트 메뉴 생성 성공', async () => {
     const res = await testClient
-      .post(`${routes.post}`)
-      .set('token', token)
+      .post(`${routes.menu}`)
+      .set('Authorization', token)
       .send(
         {
-          "title": faker.lorem.word(),
-          "content": faker.lorem.text(),
-          "categoryIdx":1
+          "category": faker.lorem.word(),
+          "name": faker.lorem.word(),
+          "description": faker.lorem.text()
         }
       )
       expect(res.status).toBe(statusCode.CREATED)
       expect(res.body.success).toBe(true)
-      expect(res.body.message).toBe(responseMessage.CREATE_POST_SUCCESS)
+      expect(res.body.message).toBe(responseMessage.CREATE_MENU_SUCCESS)
       menuId = res.body.data.id
   })
 })
@@ -55,30 +55,30 @@ describe('메뉴 생성하기', () => {
 describe('메뉴 조회하기', () => {
   test('메뉴 조회 성공', async () => {
       const res = await testClient
-        .get(`${routes.post}/${menuId}`)
-        .set('token', token)
+        .get(`${routes.menu}/${menuId}`)
+        .set('Authorization', token)
       expect(res.status).toBe(statusCode.OK)
       expect(res.body.success).toBe(true)
-      expect(res.body.message).toBe(responseMessage.READ_POST_SUCCESS)
+      expect(res.body.message).toBe(responseMessage.READ_MENU_SUCCESS)
       expect(typeof (res.body.data)).toBe('object')
     })
 
   test('메뉴 삭제 성공', async () => {
       const res = await testClient
-        .delete(`${routes.post}/${menuId}`)
-        .set('token', token)
+        .delete(`${routes.menu}/${menuId}`)
+        .set('Authorization', token)
       expect(res.status).toBe(statusCode.OK)
       expect(res.body.success).toBe(true)
-      expect(res.body.message).toBe(responseMessage.DELETE_POST_SUCCESS)
+      expect(res.body.message).toBe(responseMessage.DELETE_MENU_SUCCESS)
     })
   
   test('메뉴가 없어서 메뉴 조회 불가', async () => {
       const res = await testClient
-        .get(`${routes.post}/${menuId}`)
-        .set('token', token)
+        .get(`${routes.menu}/${menuId}`)
+        .set('Authorization', token)
       expect(res.status).toBe(statusCode.NOT_FOUND)
       expect(res.body.success).toBe(false)
-      expect(res.body.message).toBe(responseMessage.NO_POST)
+      expect(res.body.message).toBe(responseMessage.NO_MENU)
     })
 })
   

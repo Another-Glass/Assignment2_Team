@@ -7,16 +7,16 @@ const faker = require('faker');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const host = `http://localhost:${process.env.PORT}`
+const host = `${process.env.HOST}`
 const testClient = supertest(host);
 
-describe('signin', () => {
-  test('유저 로그인 성공', async () => {
+describe('token', () => {
+  test('유저 토큰 생성 성공', async () => {
     const res = await testClient
-      .post(`${routes.user}${routes.signin}`)
+      .post(`${routes.token}`)
       .send(
         {
-          "email" : "tkdtn800@naver.com",
+          "email" : "test@naver.com",
           "password" : "1234"
         }
       )
@@ -25,9 +25,9 @@ describe('signin', () => {
     expect(res.body.message).toBe(responseMessage.LOGIN_SUCCESS)
   })
 
-  test('유저 로그인 입력값 누락', async () => {
+  test('유저 토큰 입력값 누락', async () => {
     const res = await testClient
-      .post(`${routes.user}${routes.signin}`)
+      .post(`${routes.token}`)
       .send(
         {
           "email" : faker.internet.email()
@@ -38,12 +38,12 @@ describe('signin', () => {
     expect(res.body.message).toBe(responseMessage.NULL_VALUE)
   })
 
-  test('유저 로그인 존재하지 않는 이메일', async () => {
+  test('유저 토큰 존재하지 않는 이메일', async () => {
     const res = await testClient
-      .post(`${routes.user}${routes.signin}`)
+      .post(`${routes.token}`)
       .send(
         {
-          "email" : "test@test.com",
+          "email" : "test@testtest.com",
           "password" : "1234"
         }
       )
@@ -54,10 +54,10 @@ describe('signin', () => {
 
   test('유저 로그인 비밀번호 불일치', async () => {
     const res = await testClient
-      .post(`${routes.user}${routes.signin}`)
+      .post(`${routes.token}`)
       .send(
         {
-          "email" : "tkdtn800@naver.com",
+          "email" : "test@naver.com",
           "password": "12345"
         }
       )
