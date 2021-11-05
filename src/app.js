@@ -6,9 +6,7 @@ const cookieParser = require('cookie-parser');
 
 const { logger, resFormatter } = require('./utils');
 const { statusCode, routes, responseMessage } = require('./globals')
-const globalRouter = require('./routes/globalRouter.js');
-const userRouter = require('./routes/userRouter.js');
-const postRouter = require('./routes/postRouter.js');
+const routers = require('./routes');
 
 //DB연결
 
@@ -25,9 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //라우터 설정
-app.use(routes.root, globalRouter);
-app.use(routes.user, userRouter);
-app.use(routes.post, postRouter);
+app.use(routes.root, routers.globalRouter);
+app.use(routes.user, routers.userRouter);
+app.use(routes.token, routers.tokenRouter);
+app.use(routes.menu, routers.menuRouter);
+app.use(routes.tag, routers.tagRouter);
 
 
 // 아래는 에러 핸들링 함수들
