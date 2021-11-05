@@ -42,7 +42,7 @@ exports.updateItem = async (id, size, name, price, isSold) => {
       },
       {
         where: { id },
-      },
+      }
     );
     return updatedItem;
   } catch (err) {
@@ -61,6 +61,15 @@ exports.deleteItem = async id => {
       where: { id },
     });
     return deletedItem;
+  } catch (err) {
+    throw err;
+  }
+};
+
+exports.readItem = async (itemId) => {
+  try {
+    const newItem = await models.item.findByPk(itemId);
+    return newItem;
   } catch (err) {
     throw err;
   }

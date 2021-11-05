@@ -1,5 +1,6 @@
 const models = require('../models');
 const { EntityNotExistError } = require('../utils/errors/tagError');
+const logger = require('../utils/logger');
 
 /**
  * 태그 생성 서비스
@@ -72,6 +73,7 @@ exports.readTagList = async () => {
     throw err;
   }
 };
+
 
 /**
  * 메뉴와 태그 연결 해제

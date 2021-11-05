@@ -5,9 +5,7 @@ const menuService = require('../services/menuService.js');
 
 const { ValidationError, NotMatchedPostError, UnAuthorizedError, NotNumberError } = require('../utils/errors/menuError');
 
-/* decoded.username
-decoded.domain
-decoded.isAdmin */
+
 //메뉴 추가
 exports.postMenu = async (req, res, next) => {
   try {
@@ -32,19 +30,19 @@ exports.postMenu = async (req, res, next) => {
   }
 }
 
+
 //메뉴 조회
 exports.getMenu = async (req, res, next) => {
   try {
     const menuId = Number(req.params.menuId);
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
-    if (menuId === undefined) throw new ValidationError();
+    if (isNaN(menuId)) throw new ValidationError();
 
     //쿼리 실행
     const menu = await menuService.readMenu(menuId);
 
-    //메뉴 유무 확인 후 에러처리 NO_MENU : 404
-
+    //DB에 없으면 에러처리 
     if (menu === null) throw new NotMatchedPostError();
 
     //Response Code : 200 
@@ -54,6 +52,7 @@ exports.getMenu = async (req, res, next) => {
     next(err);
   }
 }
+
 
 //메뉴 수정
 exports.putMenu = async (req, res, next) => {
@@ -66,28 +65,25 @@ exports.putMenu = async (req, res, next) => {
     if (!isAdmin) throw new UnAuthorizedError();
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
-    if (category === undefined && name === undefined && description === undefined && isSold === undefined && badge === undefined) {
-
+    if (category === undefined && name === undefined && description === undefined &&
+      isSold === undefined && badge === undefined && isNaN(menuId)) {
       throw new ValidationError();
     }
 
-    //사전 쿼리
-    const menu = await menuService.readMenu(menuId);
-
-    //메뉴 유무 확인 후 에러처리 NO_MENU : 404
-    if (menu === null) throw new NotMatchedPostError();
-
     //쿼리 실행
-    await menuService.updateMenu(menuId, category, name, description, isSold, badge);
+    let result = await menuService.updateMenu(menuId, category, name, description, isSold, badge);
 
+    //DB에 없으면 에러처리 
+    if (!result[0]) throw new NotMatchedPostError()
 
-    //Response 204 NO_CONTENT
+    //Response 200 OK
     return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.UPDATE_MENU_SUCCESS));
   } catch (err) {
     next(err);
   }
 }
+
 
 //메뉴 삭제
 exports.deleteMenu = async (req, res, next) => {
@@ -100,24 +96,22 @@ exports.deleteMenu = async (req, res, next) => {
     if (!isAdmin) throw new UnAuthorizedError();
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
-    if (menuId === undefined) throw new ValidationError()
-
-    //사전 쿼리
-    const menu = await menuService.readMenu(menuId);
-
-    //메뉴 유무 확인 후 에러처리 NO_MENU : 404
-    if (menu === null) throw new NotMatchedPostError()
+    if (isNaN(menuId)) throw new ValidationError()
 
     //쿼리 실행
-    await menuService.deleteMenu(menuId);
+    let result = await menuService.deleteMenu(menuId);
 
-    //Response Code : 204
+    //DB에 없으면 에러처리 
+    if (!result) throw new NotMatchedPostError()
+
+    //Response 200 OK
     return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.DELETE_MENU_SUCCESS));
   } catch (err) {
     next(err);
   }
 }
+
 
 //전체 메뉴 조회(페이지네이션 필요)
 exports.getMenuList = async (req, res, next) => {
@@ -131,7 +125,7 @@ exports.getMenuList = async (req, res, next) => {
     //쿼리 실행
     const menuList = await menuService.readMenuList(page, limit);
 
-    //Response Code : 200
+    //Response 200 OK
     return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.READ_MENU_SUCCESS, menuList));
   } catch (err) {

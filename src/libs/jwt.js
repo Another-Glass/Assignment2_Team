@@ -7,6 +7,7 @@ const TOKEN_EXPIRED = -3;
 const TOKEN_INVALID = -2;
 
 module.exports = {
+    //토큰 생성
     sign: async user => {
         const payload = {
             "domain": user.domain,
@@ -21,6 +22,9 @@ module.exports = {
 
         return result;
     },
+
+
+    //토큰 복호화
     verify: async (token) => {
         let decoded;
         try {
@@ -32,6 +36,8 @@ module.exports = {
         }
         return decoded;
     },
+
+
     /*
     refresh: async refreshToken => {
         try {

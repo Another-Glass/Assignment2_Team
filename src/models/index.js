@@ -31,6 +31,8 @@ fs.readdirSync(__dirname)
     );
     modules[model.name] = model;
   });
+
+
 Object.keys(modules).forEach(modelName => {
   if (modules[modelName].associate) {
     modules[modelName].associate(modules);
@@ -40,10 +42,11 @@ Object.keys(modules).forEach(modelName => {
 modules.sequelize = sequelize;
 modules.Sequelize = Sequelize;
 
+//DB연결
 const connectDB = async () => {
   try {
     await modules.sequelize.authenticate();
-    await modules.sequelize.sync({ alter : true });
+    await modules.sequelize.sync({ alter: true });
     logger.log('MySQL connected ...');
   } catch (err) {
     console.error(err.message);

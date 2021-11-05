@@ -8,6 +8,8 @@ const TOKEN_EXPIRED = -3;
 //토큰 무효
 const TOKEN_INVALID = -2;
 
+
+//토큰 확인
 exports.checkToken = async (req, res, next) => {
     const authorization = req.headers.authorization;
 
