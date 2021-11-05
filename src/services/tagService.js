@@ -40,15 +40,33 @@ exports.deleteTag = async id => {
   }
 };
 
-exports.readTag = async id => {
+exports.readTagList = async () => {
   try {
-    const tag = await models.tag.findByPk(id);
-    return tag;
+    const allTags = await models.tag.findAll();
+    return allTags;
   } catch (err) {
     throw err;
   }
 };
 
-exports.deleteConnectedMenu = async (menuId, arrTagId) => {};
+exports.deleteConnectedMenu = async (menuId, tagId) => {
+  try {
+    const selectedMenu = await models.menu.findByPk(menuId);
+    const selectedTag = await models.tag.findByPk(tagId);
+    const deletedTag = await selectedMenu.removeMenuTag(selectedTag);
+    return deletedTag;
+  } catch (err) {
+    throw err;
+  }
+};
 
-exports.connectToMenu = async (menuId, arrTagId) => {};
+exports.connectToMenu = async (menuId, tagId) => {
+  try {
+    const selectedMenu = await models.menu.findByPk(menuId);
+    const selectedTag = await models.tag.findByPk(tagId);
+    const addedTag = await selectedMenu.addMenuTag(selectedTag);
+    return addedTag;
+  } catch (err) {
+    throw err;
+  }
+};

@@ -1,11 +1,12 @@
 const models = require('../models');
 
-exports.createItem = async (size, name, price) => {
+exports.createItem = async (menuId, size, name, price) => {
   try {
     const newItem = await models.item.create({
       size,
       name,
       price,
+      menuId,
     });
     return newItem;
   } catch (err) {
@@ -41,16 +42,3 @@ exports.deleteItem = async id => {
     throw err;
   }
 };
-
-exports.readItem = async id => {
-  try {
-    const item = await models.item.findByPk(id);
-    return item;
-  } catch (err) {
-    throw err;
-  }
-};
-
-exports.deleteConnectedMenu = async (menuId, arrItemId) => {};
-
-exports.connectToMenu = async (menuId, arrItemId) => {};

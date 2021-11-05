@@ -55,7 +55,13 @@ exports.deleteMenu = async menuId => {
 
 exports.readMenuList = async (page, limit) => {
   try {
-    return;
+    let offset = page * limit;
+    const menuList = await models.menu.findAll({
+      offset,
+      limit,
+      include: [{ all: true }],
+    });
+    return menuList;
   } catch (err) {
     throw err;
   }
