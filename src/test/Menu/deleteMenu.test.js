@@ -65,7 +65,7 @@ describe('메뉴 삭제하기', () => {
   
     test('메뉴가 없어서 메뉴 삭제 불가', async () => {
       const res = await testClient
-        .delete(`${routes.post}/9999999`)
+        .delete(`${routes.post}/${menuId}`)
         .set('token', token)
       expect(res.status).toBe(statusCode.NOT_FOUND)
       expect(res.body.success).toBe(false)
