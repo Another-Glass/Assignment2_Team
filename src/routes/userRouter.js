@@ -1,5 +1,5 @@
 const express = require("express");
-const routes = require('../globals').routes;
+const routes = require('../globals/routes');
 
 const userController = require('../controllers/userController.js');
 
