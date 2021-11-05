@@ -1,6 +1,7 @@
 const models = require('../models');
 
-exports.createMenu = async (category, name, description, id) => {
+exports.createMenu = async (category, name, description) => {
+
   try {
 
     return ;
@@ -18,7 +19,8 @@ exports.readMenu = async (menuId) => {
   }
 }
 
-exports.updateMenu = async (category , name , description , isSold, badge) => {
+exports.updateMenu = async (id, category , name , description , isSold, badge) => {
+
   try {
 
     return ;
@@ -27,7 +29,8 @@ exports.updateMenu = async (category , name , description , isSold, badge) => {
   }
 }
 
-exports.destroyMenu = async (menuId) => {
+exports.deleteMenu = async (menuId) => {
+
   try {
 
     return ;

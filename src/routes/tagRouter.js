@@ -10,12 +10,13 @@ const tagRouter = express.Router();
 tagRouter.post(routes.root, checkToken, tagController.postTag);
 
 // 태그 수정(관리자 전용)
-tagRouter.put(routes.root + routes.tagDetail, checkToken, tagController.updateTag);
+tagRouter.put(routes.tagDetail, checkToken, tagController.updateTag);
 
 // 태그 삭제(관리자 전용)
-tagRouter.delete(routes.root + routes.tagDetail, checkToken, tagController.deleteTag);
+tagRouter.delete(routes.tagDetail, checkToken, tagController.deleteTag);
 
 // 태그 조회
-tagRouter.get(routes.root + routes.tagDetail, checkToken, tagController.getTag);
+tagRouter.get(routes.tagDetail, checkToken, tagController.getTag);
+
 
 module.exports = tagRouter;

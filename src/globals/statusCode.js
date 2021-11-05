@@ -1,3 +1,4 @@
+//상태코드들 모음
 module.exports = {
   OK: 200,
   CREATED: 201,

@@ -10,7 +10,8 @@ const userService = require('../services/userService.js');
 //회원가입
 exports.postUser = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, isAdmin } = req.body;
+
     
     //입력값 확인
     if (email === undefined || password === undefined) {
@@ -73,7 +74,7 @@ exports.postToken = async (req, res, next) => {
     const { accessToken, refreshToken } = await jwt.sign(user);
     
     return res.status(statusCode.OK)
-      .send(resFormatter.success(responseMessage.LOGIN_SUCCESS, { accessToken, refreshToken }))
+      .send(resFormatter.success(responseMessage.LOGIN_SUCCESS, { accessToken }))
   } catch (err) {
     next(err);
   }
