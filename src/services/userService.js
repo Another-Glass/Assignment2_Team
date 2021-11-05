@@ -1,6 +1,5 @@
 const models = require('../models');
 
-
 /**
  * 회원가입 서비스
  * @param {String} emailUsername
@@ -10,7 +9,8 @@ const models = require('../models');
  * @param {Boolean} isAdmin
  * @returns {Object} { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
  */
- exports.signup = async (
+exports.signup = async (
+
   emailUsername,
   emailDomain,
   encryptPassword,
@@ -63,10 +63,17 @@ exports.signin = async (emailUsername, emailDomain, password) => {
       domain: emailDomain,
       password,
     });
-
     return user;
   } catch (err) {
     throw err;
   }
 };
 
+// exports.updateRefreshToken = async (emailUsername, emailDomain, refreshToken) => {
+//   try {
+
+//     return user;
+//   } catch (err) {
+//     throw err;
+//   }
+// }

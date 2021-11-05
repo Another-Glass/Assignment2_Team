@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   menu.associate = models => {
     menu.belongsToMany(models.tag, {
       through: 'menu_tag',
-      as: 'menuTag',
+      as: 'MenuTag',
     });
 
     menu.hasMany(models.item);
