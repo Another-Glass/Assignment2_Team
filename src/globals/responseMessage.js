@@ -1,3 +1,5 @@
+//응답 메시지 모음
+
 module.exports = {
   SUCCESS: 'Request 성공',
   NULL_VALUE: '필요한 값이 없습니다.',
@@ -7,6 +9,7 @@ module.exports = {
   INTERNAL_SERVER_ERROR: '서버 오류입니다.',
   DUPLICATE_ERROR: '중복된 요청입니다.',
   PERMISSION_ERROR: '권한이 없습니다.',
+  
 
   // token
   EMPTY_TOKEN: '토큰 값이 없습니다.',
@@ -46,4 +49,10 @@ module.exports = {
   UPDATE_TAG_SUCCESS: '태그 수정 성공',
   DELETE_TAG_SUCCESS: '태그 삭제 성공',
   READ_TAG_SUCCESS: '태그 조회 성공',
+
+  // 아이템
+  CREATE_ITEM_SUCCESS: '아이템 생성 성공',
+  UPDATE_ITEM_SUCCESS: '아이템 수정 성공',
+  DELETE_ITEM_SUCCESS: '아이템 삭제 성공',
+  READ_ITEM_SUCCESS: '아이템 조회 성공',
 };

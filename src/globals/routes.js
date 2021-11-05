@@ -10,11 +10,14 @@ const USER_SIGNIN = '/token';
 // Menu
 const MENU = '/menus';
 const MENU_DETAIL = '/:menuId';
-const MENU_PAGE = "/menus?page=${num}"
 
 // Tag
 const TAG = '/tags';
 const TAG_DETAIL = '/:tagId';
+
+// Item
+const ITEM = '/items';
+const ITEM_DETAIL = '/:itemId';
 
 const routes = {
   root: ROOT,
@@ -22,9 +25,10 @@ const routes = {
   token: USER_SIGNIN,
   menu: MENU,
   menuDetail: MENU_DETAIL,
-  menuPage : MENU_PAGE,
   tag: TAG,
-  tagDetail: TAG_DETAIL
+  tagDetail: TAG_DETAIL,
+  item: ITEM,
+  itemDetail: ITEM_DETAIL
 }
 
 module.exports = routes;

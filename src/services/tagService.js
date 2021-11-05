@@ -9,7 +9,7 @@ exports.createTag = async (type, name) => {
   }
 }
 
-exports.updateTag = async (type, name) => {
+exports.updateTag = async (id, type, name) => {
   try {
 
     return ;
@@ -17,7 +17,6 @@ exports.updateTag = async (type, name) => {
     throw err;
   }
 }
-
 exports.deleteTag = async (id) => {
   try {
 
@@ -27,7 +26,25 @@ exports.deleteTag = async (id) => {
   }
 }
 
-exports.getTag = async (id) => {
+exports.readTag = async (id) => {
+  try {
+
+    return ;
+  } catch (err) {
+    throw err;
+  }
+}
+
+exports.connectToMenu = async (id, arrTagId) => {
+  try {
+
+    return ;
+  } catch (err) {
+    throw err;
+  }
+}
+
+exports.deleteConnectedMenu = async (id, arrTagId) => {
   try {
 
     return ;
