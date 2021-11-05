@@ -7,7 +7,7 @@ const models = require('../models');
  * @param {String} encryptPassword
  * @param {String} salt
  * @param {Boolean} isAdmin
- * @returns {Object} { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
+ * @returns {Object} 가입한 유저 정보 { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
  */
 exports.signup = async (
   emailUsername,
@@ -34,13 +34,14 @@ exports.signup = async (
  * 이메일 체크 서비스
  * @param {String} emailUsername
  * @param {String} emailDomain
- * @returns {Object} { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
+ * @returns {Object} 이미 존재하는 유저 정보 { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
  */
 exports.checkEmail = async (emailUsername, emailDomain) => {
   try {
     const alreadyUser = await models.user.findOne({
-      username: emailUsername,
-      domain: emailDomain,
+      where: {
+        [Op.and]: [{ username: emailUsername }, { domain: emailDomain }],
+      },
     });
     return alreadyUser;
   } catch (err) {
@@ -53,14 +54,18 @@ exports.checkEmail = async (emailUsername, emailDomain) => {
  * @param {String} emailUsername
  * @param {String} emailDomain
  * @param {String} password
- * @returns {Object} { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
+ * @returns {Object} 로그인한 유저 정보 { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
  */
 exports.signin = async (emailUsername, emailDomain, password) => {
   try {
     const user = await models.user.findOne({
-      username: emailUsername,
-      domain: emailDomain,
-      password,
+      where: {
+        [Op.and]: [
+          { username: emailUsername },
+          { domain: emailDomain },
+          { password: password },
+        ],
+      },
     });
     return user;
   } catch (err) {
