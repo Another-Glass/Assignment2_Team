@@ -1,37 +1,12 @@
-const mongoose = require('mongoose');
+module.exports = (sequelize, DataTypes) => {
+  const user = sequelize.define('user', {
+    username: { type: DataTypes.STRING, primaryKey: true, allowNull: false },
+    domain: { type: DataTypes.STRING, primaryKey: true, allowNull: false },
+    password: { type: DataTypes.STRING, allowNull: false },
+    isAdmin: { type: DataTypes.BOOLEAN, allowNull: false },
+    salt: { type: DataTypes.STRING },
+    refreshToken: { type: DataTypes.STRING },
+  });
 
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  salt: {
-    type: String,
-    required: true
-  },
-  refreshToken: {
-    type: String
-  },
-}, { versionKey: false });
-
-UserSchema.virtual('posts', {
-  ref: 'Post',
-  localField: '_id',
-  foreignField: 'userId',
-});
-UserSchema.virtual('comments', {
-  ref: 'Comment',
-  localField: '_id',
-  foreignField: 'userid',
-});
-
-module.exports = mongoose.model("User", UserSchema);
+  return user;
+};
