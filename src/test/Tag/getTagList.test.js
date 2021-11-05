@@ -47,61 +47,18 @@ describe('태그 생성하기', () => {
       expect(res.status).toBe(statusCode.CREATED)
       expect(res.body.success).toBe(true)
       expect(res.body.message).toBe(responseMessage.CREATE_TAG_SUCCESS)
-    tagId = res.body.data.id
+      tagId = res.body.data.id
   })
 })
 
-describe('태그 수정하기', () => {
-  test('태그 수정 성공', async () => {
+describe('태그 조회하기', () => {
+  test('태그 조회 성공', async () => {
       const res = await testClient
-        .put(`${routes.tag}/${tagId}`)
-        .set('Authorization', token)
-        .send(
-          {
-            "type": faker.lorem.word(),
-            "name": faker.lorem.text()
-          }
-        )
+        .get(`${routes.tag}`)
       expect(res.status).toBe(statusCode.OK)
       expect(res.body.success).toBe(true)
-      expect(res.body.message).toBe(responseMessage.UPDATE_TAG_SUCCESS)
-    })
-  
-    test('메뉴 수정 입력값 누락', async () => {
-      const res = await testClient
-        .put(`${routes.tag}/${tagId}`)
-        .set('Authorization', token)
-        .send(
-          {
-          }
-        )
-      expect(res.status).toBe(statusCode.BAD_REQUEST)
-      expect(res.body.success).toBe(false)
-      expect(res.body.message).toBe(responseMessage.NULL_VALUE)
-    })
-
-    test('태그 삭제 성공', async () => {
-      const res = await testClient
-        .delete(`${routes.tag}/${tagId}`)
-        .set('Authorization', token)
-      expect(res.status).toBe(statusCode.OK)
-      expect(res.body.success).toBe(true)
-      expect(res.body.message).toBe(responseMessage.DELETE_TAG_SUCCESS)
-    })
-
-    test('메뉴가 없어서 메뉴 수정 불가', async () => {
-      const res = await testClient
-        .put(`${routes.tag}/${tagId}`)
-        .set('Authorization', token)
-        .send(
-          {
-            "type": faker.lorem.word(),
-            "name": faker.lorem.text()
-          }
-        )
-      expect(res.status).toBe(statusCode.NOT_FOUND)
-      expect(res.body.success).toBe(false)
-      expect(res.body.message).toBe(responseMessage.ENTITY_NOT_EXIST)
+      expect(res.body.message).toBe(responseMessage.READ_TAG_SUCCESS)
+      expect(typeof (res.body.data)).toBe('object')
     })
 })
   
