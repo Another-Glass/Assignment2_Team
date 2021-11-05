@@ -3,6 +3,7 @@ const routes = require('../globals').routes;
 
 const { checkToken } = require('../middlewares/auth.js');
 const menuController = require('../controllers/menuController.js');
+
 const tagController = require('../controllers/tagController.js');
 const itemController = require('../controllers/itemController.js');
 
@@ -42,6 +43,7 @@ menuRouter.put(routes.menuDetail+routes.item+routes.menuDetail, checkToken, item
 
 // 아이템 삭제(관리자 전용)
 menuRouter.delete(routes.menuDetail+routes.item+routes.menuDetail, checkToken, itemController.deleteItem);
+
 
 
 module.exports = menuRouter;

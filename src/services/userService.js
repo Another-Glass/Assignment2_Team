@@ -1,5 +1,6 @@
 const models = require('../models');
 
+
 /**
  * 회원가입 서비스
  * @param {String} emailUsername
@@ -62,8 +63,10 @@ exports.signin = async (emailUsername, emailDomain, password) => {
       domain: emailDomain,
       password,
     });
+
     return user;
   } catch (err) {
     throw err;
   }
 };
+

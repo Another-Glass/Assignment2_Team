@@ -8,7 +8,6 @@ const { ValidationError, NotMatchedPostError, UnAuthorizedError, NotNumberError 
 /* decoded.id
 decoded.name
 decoded.isAdmin */
-
 //메뉴 추가
 exports.postMenu = async (req, res, next) => {
   try {
@@ -27,6 +26,7 @@ exports.postMenu = async (req, res, next) => {
     //Respons Code : 201
     return res.status(statusCode.CREATED)
       .send(resFormatter.success(responseMessage.CREATE_MENU_SUCCESS, { id : menu.id }));
+
   } catch (err) {
     next(err);
   }
@@ -44,6 +44,7 @@ exports.getMenu = async (req, res, next) => {
     const menu = await menuService.readMenu(menuId);
 
     //메뉴 유무 확인 후 에러처리 NO_MENU : 404
+
     if (menu === null) throw new NotMatchedPostError();
 
     //Response Code : 200 
@@ -67,6 +68,7 @@ exports.putMenu = async (req, res, next) => {
 
     //입력값 없으면 에러처리 NULL_VALUE : 400
     if (category === undefined && name === undefined && description === undefined && isSold === undefined && badge === undefined) {
+
       throw new ValidationError();
     }
 
@@ -78,6 +80,7 @@ exports.putMenu = async (req, res, next) => {
 
     //쿼리 실행
     await menuService.updateMenu(menuId, category, name, description, isSold, badge);
+
 
     //Response 204 NO_CONTENT
     return res.status(statusCode.NO_CONTENT)
@@ -108,7 +111,7 @@ exports.deleteMenu = async (req, res, next) => {
 
     //쿼리 실행
     await menuService.deleteMenu(menuId);
-    
+
     //Response Code : 204
     return res.status(statusCode.NO_CONTENT)
       .send(resFormatter.success(responseMessage.DELETE_MENU_SUCCESS));
@@ -128,7 +131,7 @@ exports.getMenuList = async (req, res, next) => {
 
     //쿼리 실행
     const menuList = await menuService.readMenuList(page,limit);
-    
+
     //Response Code : 200
     return res.status(statusCode.OK)
       .send(resFormatter.success(responseMessage.READ_MENU_SUCCESS, menuList));
@@ -136,4 +139,3 @@ exports.getMenuList = async (req, res, next) => {
     next(err);
   }
 }
-

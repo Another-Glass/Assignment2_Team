@@ -11,6 +11,7 @@ const userService = require('../services/userService.js');
 exports.postUser = async (req, res, next) => {
   try {
     const { email, password, isAdmin } = req.body;
+
     
     //입력값 확인
     if (email === undefined || password === undefined) {

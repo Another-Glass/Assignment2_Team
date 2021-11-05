@@ -4,7 +4,6 @@ const { ValidationError, NotExistError } = require('../utils/errors/tagError');
 
 const tagService = require('../services/tagService.js');
 
-// 태그 추가
 exports.postTag = async (req, res, next) => {
 		try {
 			const { type, name } = req.body;
@@ -17,6 +16,7 @@ exports.postTag = async (req, res, next) => {
 		
 			return res.status(statusCode.CREATED)
 				.send(resFormatter.success(responseMessage.CREATE_TAG_SUCCESS, { id : id }))
+
 		} catch (err) {
 			next(err);
 		}
@@ -34,11 +34,13 @@ exports.updateTag = async (req, res, next) => {
 			//쿼리실행
 			let id = await tagService.updateTag(paramId, type, name);
 
+
 			//id 유무 확인
 			if (!id) throw new NotExistError();
 
 			return res.status(statusCode.NO_CONTENT)
 				.send(resFormatter.success(responseMessage.UPDATE_TAG_SUCCESS));
+
 	} catch (err) {
 		next(err);
 	}
@@ -54,11 +56,13 @@ exports.deleteTag = async (req, res, next) => {
 		
 		const id = await tagService.deleteTag(paramId);
 
+
 		//id 유무 확인
 		if (!id) throw new NotExistError();
 
 		return res.status(statusCode.NO_CONTENT)
       .send(resFormatter.success(responseMessage.DELETE_TAG_SUCCESS));
+
 	} catch (err) {
 		next(err);
 	}

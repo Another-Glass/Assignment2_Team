@@ -55,4 +55,5 @@ module.exports = {
   UPDATE_ITEM_SUCCESS: '아이템 수정 성공',
   DELETE_ITEM_SUCCESS: '아이템 삭제 성공',
   READ_ITEM_SUCCESS: '아이템 조회 성공',
+
 };

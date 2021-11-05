@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser');
 const { logger, resFormatter } = require('./utils');
 const { statusCode, routes, responseMessage } = require('./globals')
 
-
 const globalRouter = require('./routes/globalRouter');
 const userRouter = require('./routes/userRouter');
 const tokenRouter = require('./routes/tokenRouter');

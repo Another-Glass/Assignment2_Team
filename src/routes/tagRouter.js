@@ -18,4 +18,5 @@ tagRouter.delete(routes.tagDetail, checkToken, tagController.deleteTag);
 // 태그 조회
 tagRouter.get(routes.tagDetail, checkToken, tagController.getTag);
 
+
 module.exports = tagRouter;
