@@ -61,8 +61,7 @@
 | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) |
 |                        개발 환경 설정                        |                        개발 환경 설정                        |                        개발 환경 설정                        |
 |                     통합 테스트                     |                             API                              |                              DB                              |
-|                      [프로젝트 회고]()                       |                      [프로젝트 회고]()                       | [프로젝트 회고](https://velog.io/@dongjay00/%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%91%90%EB%B2%88%EC%A7%B8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0) |
-
+|                      [프로젝트 회고]()                       |                      [프로젝트 회고](https://velog.io/@gusrlf14/%EC%9B%90%ED%8B%B0%EB%93%9C-%EC%9C%84%EC%BD%94%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%B0%B1%EC%97%94%EB%93%9C-2%ED%9A%8C%EC%B0%A8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0)                       | [프로젝트 회고](https://velog.io/@dongjay00/%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%91%90%EB%B2%88%EC%A7%B8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0) |
 
 
 </div>
@@ -146,7 +145,6 @@
 
 - 자바스크립트 자체 내장 Error 클래스를 상속 받아서, 커스텀 에러를 생성해서 관리했습니다.
 
-
 </br>
 </br>
 
@@ -196,7 +194,7 @@
 
 - Postman을 활용하여 API 작동 테스트를 진행했습니다. 
 - __배포된 서버 주소__ 및 자세한 API 명세는 아래에서 확인 가능합니다.
-- [🗂 API Description Link]()
+- [🗂 API Description Link](https://documenter.getpostman.com/view/18068137/UVC2J9gg)
 
 </br>
 </br>
