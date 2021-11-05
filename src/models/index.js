@@ -24,7 +24,11 @@ fs.readdirSync(__dirname)
     );
   })
   .forEach(file => {
-    modules[file.replace('.js', '')] = require(path.join(__dirname, file));
+    const model = require(path.join(__dirname, file))(
+      sequelize,
+      Sequelize.DataTypes,
+    );
+    modules[model.name] = model;
   });
 Object.keys(modules).forEach(modelName => {
   if (modules[modelName].associate) {
@@ -35,37 +39,19 @@ Object.keys(modules).forEach(modelName => {
 modules.sequelize = sequelize;
 modules.Sequelize = Sequelize;
 
-// const connectDB = async () => {
-//   try {
-//     await modules.sequelize.authenticate();
-//     await modules.sequelize.sync({ alter: true });
-//     logger.log('MySQL connected ...');
-//   } catch (err) {
-//     console.error(err.message);
-//     process.exit(1);
-//   }
-// };
-
-modules.sequelize
-  .authenticate()
-  .then(() => {
-    modules.sequelize
-      .sync()
-      .then(() => {
-        logger.log('MySQL connected ...');
-      })
-      .catch(err => {
-        console.error(err.message);
-        process.exit(1);
-      });
-  })
-  .catch(err => {
+const connectDB = async () => {
+  try {
+    await modules.sequelize.authenticate();
+    await modules.sequelize.sync({ alter: true });
+    logger.log('MySQL connected ...');
+  } catch (err) {
     console.error(err.message);
     process.exit(1);
-  });
+  }
+};
 
-// (async () => {
-//   await connectDB();
-// })();
+(async () => {
+  await connectDB();
+})();
 
 module.exports = modules;

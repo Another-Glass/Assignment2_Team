@@ -13,10 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   item.associate = models => {
-    item.belongsToMany(models.menu, {
-      through: 'menu_item',
-      as: 'menuItem',
-    });
+    item.belongsTo(models.menu);
   };
 
   return item;

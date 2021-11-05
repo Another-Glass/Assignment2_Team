@@ -18,13 +18,8 @@ module.exports = (sequelize, DataTypes) => {
       through: 'menu_tag',
       as: 'menuTag',
     });
-  };
 
-  menu.associate = models => {
-    menu.belongsToMany(models.item, {
-      through: 'menu_item',
-      as: 'menuItem',
-    });
+    menu.hasMany(models.item);
   };
 
   return menu;

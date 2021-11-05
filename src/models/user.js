@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  sequelize.define('user', {
+  const user = sequelize.define('user', {
     username: { type: DataTypes.STRING, primaryKey: true, allowNull: false },
     domain: { type: DataTypes.STRING, primaryKey: true, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
@@ -7,4 +7,6 @@ module.exports = (sequelize, DataTypes) => {
     salt: { type: DataTypes.STRING },
     refreshToken: { type: DataTypes.STRING },
   });
+
+  return user;
 };
