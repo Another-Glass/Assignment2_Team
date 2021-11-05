@@ -43,15 +43,38 @@
 
     사전 준비 2단계까지 완료 후 관리자 지속적으로
 
-    / 15초 휴식 - 1~5개 랜덤 메뉴 추가 + 태그/아이템 3개 배정 - 추가된 아이템 제외 동일 수량 메뉴/아이템 제거 \
+    / 15초 휴식 - 1~5개 랜덤 메뉴 추가 + 태그/아이템 3개 배정 - 추가된 아이템 제외 동일 수량 메뉴 및 해당 아이템 제거 \
     \                                                                                                  /
      ---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---<---
 
+
+
+    테스트 Variables(./config.json)
+
+        준비단계
+        prepare : {
+            adminEmail : 관리자 계정정보
+            adminPW : 관리자 계정정보
+            initialMenu : 준비단계에서 갖출 메뉴 갯수
+            initialTag : 준비단계에서 갖출 태그 갯수, 새로 생성되는 메뉴에만 적용
+            initialitem : 준비단계에서 갖출 메뉴당 아이템 갯수 , 새로 생성되는 메뉴에만 적용
+        }
+        사용자 logic
+        user : {
+            maxGeneration : 사용자들을 몇 세대까지 증가시켜서 테스트를 하는가? 해당 generation에 도달하면 더이상 테스트 사용자를 만들지 않고 테스트 종료
+            choice : 한 사용자가 몇개의 메뉴를 선택해서 확인해볼것인지
+            interval : 새로운 사용자가 등장하기 까지 유예시간.
+        }
+        관리자 logic 
+        admin : {
+            interval : 새로 메뉴 수정작업을 시작하기까지 대기시간
+            range : {
+                min : 랜덤으로 추가되는 메뉴의 최소 갯수
+                max : 랜덤으로 추가되는 메뉴의 최대 갯수
+            }
+        }
+
 */ 
-
-
-
-
 const supertest = require('supertest');
 const responseMessage = require('../../globals/responseMessage');
 const statusCode = require('../../globals/statusCode');
