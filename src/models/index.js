@@ -42,7 +42,7 @@ modules.Sequelize = Sequelize;
 const connectDB = async () => {
   try {
     await modules.sequelize.authenticate();
-    await modules.sequelize.sync({ alter: true });
+    await modules.sequelize.sync({ alter : true });
     logger.log('MySQL connected ...');
   } catch (err) {
     console.error(err.message);

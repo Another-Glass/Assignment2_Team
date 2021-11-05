@@ -9,7 +9,8 @@ module.exports = {
     sign: async user => {
         const payload = {
             id: user.id,
-            name: user.name
+            name: user.name,
+            isAdmin: user.isAdmin
         };
 
         const result = {
@@ -17,7 +18,6 @@ module.exports = {
             refreshToken: jsonwebtoken.sign(payload, secretKey.secretKey, secretKey.refreshOptions)
         };
 
-        await userService.updateRefreshToken(user.id, result.refreshToken);
         return result;
     },
     verify: async (token) => {
@@ -31,6 +31,7 @@ module.exports = {
         }
         return decoded;
     },
+    /*
     refresh: async refreshToken => {
         try {
             const result = jsonwebtoken.verify(refreshToken, secretKey.secretKey);
@@ -42,6 +43,7 @@ module.exports = {
             const payload = {
                 id: user.id,
                 name: user.name,
+                isAdmin: user.isAdmin
             };
             const dto = {
                 accessToken: jsonwebtoken.sign(payload, secretKey.secretKey, secretKey.options),
@@ -55,4 +57,5 @@ module.exports = {
             return TOKEN_INVALID;
         }
     }
+    */
 }

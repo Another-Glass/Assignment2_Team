@@ -10,6 +10,7 @@ const models = require('../models');
  * @returns {Object} { username, domain, password, isAdmin, salt, refreshToken, createdAt, updatedAt }
  */
 exports.signup = async (
+
   emailUsername,
   emailDomain,
   encryptPassword,
