@@ -47,9 +47,8 @@
 |  <img src="https://avatars.githubusercontent.com/u/59385491?v=4" height=200 width=200> | <img src="https://avatars.githubusercontent.com/u/38933716?v=4" height=200 width=200> |<img src="https://avatars.githubusercontent.com/u/67402180?v=4" height=200 width=200>  |
 | **blog**: [Plus Ultra](https://overcome-the-limits.tistory.com/) </br> **github**: [epitone](https://github.com/epitoneproject)| **blog**: [sudocorp](https://sudocorp.tistory.com/) </br> **github**: [SibaDoge1](https://github.com/SibaDoge1)| **blog**: [raejun92.log](https://velog.io/@raejun92) </br> **github**: [raejun92](https://github.com/raejun92)
 | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) |![sprint2](https://img.shields.io/badge/wanted-sprint2-orange)  | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) |
-|개발 환경 설정 | 개발 환경 설정 | 개발 환경 설정 |
 | 단위 테스트 | DevOps, API, DB | API |
-| [프로젝트 회고](https://overcome-the-limits.tistory.com/entry/%ED%9A%8C%EA%B3%A0-%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%B0%B1%EC%97%94%EB%93%9C-%EC%BD%94%EC%8A%A4-2%EC%B0%A8-%EA%B3%BC%EC%A0%9C) | [프로젝트 회고]() | [프로젝트 회고]()
+| [프로젝트 회고](https://overcome-the-limits.tistory.com/entry/%ED%9A%8C%EA%B3%A0-%EC%9B%90%ED%8B%B0%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%B0%B1%EC%97%94%EB%93%9C-%EC%BD%94%EC%8A%A4-2%EC%B0%A8-%EA%B3%BC%EC%A0%9C) | [프로젝트 회고](https://sudocorp.tistory.com/3) | [프로젝트 회고](https://velog.io/@raejun92/Assignment2-%ED%94%84%EB%A0%88%EC%8B%9C%EC%BD%94%EB%93%9C)
 
 <br>
 <br>
@@ -59,9 +58,8 @@
 | <img src="https://avatars.githubusercontent.com/u/32833404?v=4" height=200 width=200> | <img src="https://avatars.githubusercontent.com/u/48472537?v=4" height=200 width=200> | <img src="https://avatars.githubusercontent.com/u/68373235?v=4" height=200 width=200> |
 | **blog**: [Makkiato](https://makkiato.tistory.com) </br> **github**: [Makkiato](https://github.com/Makkiato) | **blog**: [gusrlf14](https://velog.io/@gusrlf14) </br> **github**: [hyunghilkim](https://github.com/hyunghilkim) | **blog**: [dongjay00.log](https://velog.io/@dongjay00) </br> **github**: [dongjay00](https://github.com/dongjay00) |
 | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) | ![sprint2](https://img.shields.io/badge/wanted-sprint2-orange) |
-|                        개발 환경 설정                        |                        개발 환경 설정                        |                        개발 환경 설정                        |
 |                     통합 테스트                     |                             API                              |                              DB                              |
-|                      [프로젝트 회고]()                       |                      [프로젝트 회고](https://velog.io/@gusrlf14/%EC%9B%90%ED%8B%B0%EB%93%9C-%EC%9C%84%EC%BD%94%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%B0%B1%EC%97%94%EB%93%9C-2%ED%9A%8C%EC%B0%A8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0)                       | [프로젝트 회고](https://velog.io/@dongjay00/%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%91%90%EB%B2%88%EC%A7%B8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0) |
+|                      [프로젝트 회고](https://makkiato.tistory.com/3)                       |                      [프로젝트 회고](https://velog.io/@gusrlf14/%EC%9B%90%ED%8B%B0%EB%93%9C-%EC%9C%84%EC%BD%94%EB%93%9C-%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%B0%B1%EC%97%94%EB%93%9C-2%ED%9A%8C%EC%B0%A8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0)                       | [프로젝트 회고](https://velog.io/@dongjay00/%ED%94%84%EB%A6%AC%EC%98%A8%EB%B3%B4%EB%94%A9-%EB%91%90%EB%B2%88%EC%A7%B8-%EA%B3%BC%EC%A0%9C-%ED%9A%8C%EA%B3%A0) |
 
 
 </div>
@@ -138,6 +136,7 @@
 
 - jest를 활용해서 단위 테스트를 구현했습니다. 
 - faker.js 라이브러리를 활용해서 seed data를 생성했습니다.
+- 통합 테스트를 구현해서 실제 사용자와 관리자가 보일만한 패턴을 시나리오로 작성해서 활용하고자 노력했습니다.
 
 <br>
 
